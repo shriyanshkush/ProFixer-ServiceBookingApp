@@ -28,59 +28,70 @@ class _AvailabilitySelectorState extends State<AvailabilitySelector> {
     '4:00 PM - 6:00 PM'
   ];
 
-  Map<String, List<String>> _availability = {};
+  Map<String, DayModel> _days = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _days = Map.fromIterable(
+      _daysOfWeek,
+      key: (day) => day as String,
+      value: (day) => DayModel(day: day as String),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionPanelList(
-      expansionCallback: (int index, bool isExpanded) {
-        setState(() {
-          _availability[_daysOfWeek[index]] =
-          _availability[_daysOfWeek[index]]  ?? [] ;
-        });
-      },
-      children: _daysOfWeek.map<ExpansionPanel>((String day) {
-        bool isExpanded = _availability.containsKey(day);
-        return ExpansionPanel(
-          headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              title: Text(day),
-            );
-          },
-          body: Column(
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: _daysOfWeek.map((day) {
+          final dayModel = _days[day]!;
+          return ExpansionTile(
+            title: Text(dayModel.day),
             children: _timeSlots.map((slot) {
-              bool isSelected = _availability[day]?.contains(slot) ?? false;
+              bool isSelected = dayModel.selectedSlots.contains(slot);
               return CheckboxListTile(
                 title: Text(slot),
                 value: isSelected,
-                onChanged: isExpanded
-                    ? (bool? value) {
+                onChanged: (bool? value) {
                   setState(() {
                     if (value == true) {
-                      _availability.putIfAbsent(day, () => []).add(slot);
+                      _days[day]!.selectedSlots.add(slot);
                     } else {
-                      _availability[day]?.remove(slot);
-                      if (_availability[day]?.isEmpty ?? false) {
-                        _availability.remove(day);
-                      }
+                      _days[day]!.selectedSlots.remove(slot);
                     }
                     if (widget.onAvailabilityChanged != null) {
-                      widget.onAvailabilityChanged!(_availability);
+                      widget.onAvailabilityChanged!({
+                        for (var dm in _days.values)
+                          dm.day: dm.selectedSlots,
+                      });
                     }
                   });
-                }
-                    : null,
+                },
               );
             }).toList(),
-          ),
-          isExpanded: isExpanded,
-        );
-      }).toList(),
+          );
+        }).toList(),
+      ),
     );
   }
 
   // Optional: Method to retrieve availability
   Map<String, List<String>> getAvailability() {
-    return _availability;
+    return {
+      for (var dm in _days.values) dm.day: dm.selectedSlots,
+    };
   }
+}
+
+class DayModel {
+  final String day;
+  List<String> selectedSlots;
+
+  DayModel({
+    required this.day,
+    List<String>? selectedSlots,
+  }) : selectedSlots = selectedSlots ?? []; // Initialize with an empty list if null
 }

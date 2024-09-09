@@ -292,6 +292,7 @@ class _TechnicianRegistrationPageState extends State<TechnicianRegistration> {
                     _selectedAvailability = availability;
                   },
                 ),
+                SizedBox(height: 18),
                 ElevatedButton(
                   onPressed: _register,
                   child:  isLoading
