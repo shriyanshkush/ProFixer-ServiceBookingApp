@@ -1,16 +1,13 @@
-# profixer
+# ProFixer
 
-A new Flutter project.
+ProFixer is a Flutter application that connects users with skilled and trustworthy technicians for various services including appliance repair, plumbing, electrical, HVAC services, painting, and carpentry. The app provides functionalities for technician registration, user booking, admin management, and review systems.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- **Technician Registration**: Allows technicians to register and provide their details including skills, availability, and credentials.
+- **User Booking**: Users can book technicians for various services and view available slots.
+- **Availability Management**: Technicians can set their availability for each day of the week with specific time slots.
+- **Review System**: Users can leave reviews for technicians based on their experiences.
+- **Real-time Chat**: Users and technicians can communicate through an in-app chat system.
+- **Admin Management**: Admins can manage users and technicians, view analytics, and handle other administrative tasks.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
