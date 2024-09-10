@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:profixer/models/tecnician_model.dart';
+import '../models/tecnician_model.dart';
 
-class TechnicianCard extends StatelessWidget {
-  final TechnicianProfile technician;
+class TechnicianCard extends StatefulWidget {
+  final TechnicianProfile technicianProfile;
 
-  TechnicianCard({super.key, required this.technician});
+  const TechnicianCard({
+    super.key,
+    required this.technicianProfile,
+  });
+
+  @override
+  _TechnicianCardState createState() => _TechnicianCardState();
+}
+
+class _TechnicianCardState extends State<TechnicianCard> {
+  bool _isBookmarked = false; // Track the bookmark state
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14.0),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.0),
@@ -23,15 +33,19 @@ class TechnicianCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Image
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Container(
-              color: Colors.blue,
+          // Technician Image
+          Container(
+            padding: EdgeInsets.all(1.0),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
               child: Image.network(
-                technician.pfpURL!,
-                width: 60,
-                height: 80,
+                widget.technicianProfile.pfpURL!,
+                width: 80,
+                height: 100,
                 fit: BoxFit.cover,
               ),
             ),
@@ -42,57 +56,127 @@ class TechnicianCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  technician.name,
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  technician.skill,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                  ),
-                ),
-                SizedBox(height: 8.0),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Rs. 100",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(width: 8.0),
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          FontAwesomeIcons.solidStar,
-                          color: Colors.yellow[600],
-                          size: 16.0,
-                        ),
-                        SizedBox(width: 4.0),
                         Text(
-                          '${technician.rating} (100 Reviews)',
+                          widget.technicianProfile.name,
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          widget.technicianProfile.skill,
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.blue,
                           ),
                         ),
                       ],
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _isBookmarked = !_isBookmarked; // Toggle the bookmark state
+                        });
+                      },
+                      icon: Icon(
+                        _isBookmarked ? FontAwesomeIcons.bookmark :
+                        FontAwesomeIcons.solidBookmark,
+                        color:  Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 12.0),
+                // Charges, Rating, and Reviews with Vertical Line
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Charge',
+                            style: TextStyle(fontSize: 12.0, color: Colors.grey,fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            'Rs. 100', // Dynamic value
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: 1.0, // Width of the vertical line
+                      height: 40.0, // Adjust height as needed
+                      color: Colors.grey[300], // Color of the line
+                      margin: EdgeInsets.symmetric(horizontal: 16.0), // Spacing around the line
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Rating',
+                            style: TextStyle(fontSize: 12.0, color: Colors.grey,fontWeight: FontWeight.bold),
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.solidStar,
+                                color: Colors.yellow[500],
+                                size: 12.0,
+                              ),
+                              SizedBox(width: 4.0),
+                              Text(
+                                '${widget.technicianProfile.rating}', // Dynamic value
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: 1.0, // Width of the vertical line
+                      height: 40.0, // Adjust height as needed
+                      color: Colors.grey[300], // Color of the line
+                      margin: EdgeInsets.symmetric(horizontal: 16.0), // Spacing around the line
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Reviews',
+                            style: TextStyle(fontSize: 12.0, color: Colors.grey,fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '100', // Dynamic value
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ],
             ),
           ),
-          // Bookmark Icon
-          IconButton(onPressed: (){},
-            icon: Icon(
-            FontAwesomeIcons.solidBookmark,
-            color: Colors.blue,
-          ),)
         ],
       ),
     );

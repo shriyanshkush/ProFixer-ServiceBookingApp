@@ -61,7 +61,7 @@ class _TechnicianListSkillBasedState extends State<TechnicianListSkillBased> {
              padding: const EdgeInsets.all(15.0),
              child: Column(
                children: [
-                 TechnicianCard(technician: technician),
+                 TechnicianCard(technicianProfile: technician),
                ],
              ),
            );
