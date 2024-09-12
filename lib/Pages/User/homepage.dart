@@ -72,13 +72,11 @@ class HomepageState extends State<Homepage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: screenSize.height * 0.047),
+              SizedBox(height: screenSize.height * 0.037),
               _aboveSearchfield(),
-              SizedBox(height: screenSize.height * 0.015),
-              _searchBar(screenSize),
-              SizedBox(height: screenSize.height * 0.015),
+              SizedBox(height: screenSize.height * 0.025),
               _categaries(),
-              SizedBox(height: screenSize.height * 0.015),
+              SizedBox(height: screenSize.height * 0.025),
               _recommended(),
             ],
           ),
@@ -90,7 +88,7 @@ class HomepageState extends State<Homepage> {
   Widget _searchBar(Size screenSize) {
     return Center(
       child: SizedBox(
-        width: screenSize.width * 0.95,
+        width: screenSize.width * 0.9,
         child: Container(
           color: Colors.white,
           child: TextField(
@@ -118,33 +116,42 @@ class HomepageState extends State<Homepage> {
         color: Colors.blue.shade200,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Row(
-        children:[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Hey Shriyansh,",style: TextStyle(fontSize: 25),),
-              SizedBox(height: 8,),
-              Row(
-                children: [
-                  Text("What Services Do You",style: TextStyle(
-                    fontSize: 29,
-                    fontWeight: FontWeight.bold,
-                  ),),
-                ],
-              ),
-              Text("Need?",style: TextStyle(
-                fontSize: 29,
-                fontWeight: FontWeight.bold,
-              ),),
-            ],
-          ),
-          SizedBox(width: 14,),
-          CircleAvatar(
-              radius: 30,
-              child: IconButton(onPressed: (){}, icon: Icon(Icons.notifications,size: 38,color: Colors.blue,))),
-      ]
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Row(
+              children:[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Hey Shriyansh,",style: TextStyle(fontSize: 22),),
+                    SizedBox(height: 8,),
+                    Row(
+                      children: [
+                        Text("What Services Do You",style: TextStyle(
+                          fontSize: 27,
+                          fontWeight: FontWeight.bold,
+                        ),),
+                      ],
+                    ),
+                    Text("Need?",style: TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold,
+                    ),),
+                  ],
+                ),
+                SizedBox(width: 21,),
+                CircleAvatar(
+                    radius: 30,
+                    child: IconButton(onPressed: (){}, icon: Icon(Icons.notifications,size: 38,color: Colors.blue,))),
+            ]
+            ),
+            SizedBox(height: 10,),
+            _searchBar(MediaQuery.of(context).size),
+          ],
+        ),
       ),
     );
   }
@@ -234,7 +241,7 @@ class HomepageState extends State<Homepage> {
                 child: Text("view all",style: TextStyle(fontSize: 21,color: Colors.blue),)),
           ],
         ),
-        SizedBox(height: MediaQuery.of(context).size.width * 0.045),
+        SizedBox(height: MediaQuery.of(context).size.width * 0.035),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
