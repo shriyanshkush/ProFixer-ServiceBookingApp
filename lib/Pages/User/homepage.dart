@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:profixer/Pages/User/technicianlistskillbased.dart';
 import 'package:profixer/Services/Navigation_services.dart';
@@ -201,6 +202,13 @@ class HomepageState extends State<Homepage> {
             SizedBox(width: MediaQuery.of(context).size.width * 0.015),
             Column(
               children: [
+                IconButton(onPressed: (){}, icon: Icon(Icons.shopping_cart_rounded,size: 33,color: Colors.white,)),
+                Text("Cart",style: TextStyle(color: Colors.white),)
+              ],
+            ),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.015),
+            Column(
+              children: [
                 IconButton(onPressed: (){}, icon: Icon(Icons.calendar_month,size: 33,color: Colors.white,),),
                 Text("Booking",style: TextStyle(color: Colors.white),),
               ],
@@ -212,13 +220,6 @@ class HomepageState extends State<Homepage> {
                 Text("Chat",style: TextStyle(color: Colors.white),)
               ],
             ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.015),
-            Column(
-              children: [
-                IconButton(onPressed: (){}, icon: Icon(Icons.notifications,size: 33,color: Colors.white,)),
-                Text("Notifications",style: TextStyle(color: Colors.white),)
-              ],
-            )
           ],
         ),
       ),
