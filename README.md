@@ -118,16 +118,6 @@ ProFixer is a comprehensive mobile application designed to connect users with sk
 - **Platform Fee Management**: Set platform fees and view payment splits between technicians and the platform.
 - **Service Analytics**: View statistics on service bookings, technician performance, and customer satisfaction.
 
-/profixer-app
-├── /lib
-│   ├── /models         # Data models (User, Technician, Booking, etc.)
-│   ├── /screens        # UI screens (Home, Search, Booking, Chat, etc.)
-│   ├── /services       # Firebase services (Auth, Firestore, Cloud Functions)
-│   ├── /widgets        # Reusable UI components (Buttons, Forms, etc.)
-│   └── main.dart       # Entry point of the Flutter app
-└── /assets             # Images, icons, fonts
-
-
 
 ## Features
 
@@ -165,7 +155,3 @@ We welcome contributions to make ProFixer even better! Please follow these steps
 
 Thank you for your interest in contributing to ProFixer!
 
-
-## Contact
-
-For any questions or issues, please contact [shriyanshk133@gmail.com](mailto:shriyanshk133@gmail.com).
