@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class CartPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return BookMarkPageState();
+    return CartPageState();
   }
 }
 
-class BookMarkPageState extends State<CartPage> {
+class CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

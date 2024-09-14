@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_it/get_it.dart';
+import 'package:profixer/Services/auth_services.dart';
+import 'package:profixer/Services/database_services.dart';
 import '../models/tecnician_model.dart';
 
 class TechnicianCard extends StatefulWidget {
@@ -16,6 +19,26 @@ class TechnicianCard extends StatefulWidget {
 
 class _TechnicianCardState extends State<TechnicianCard> {
   bool _isBookmarked = false; // Track the bookmark state
+  final GetIt _getIt = GetIt.instance;
+  late AuthServices _authServices;
+  late DatabaseServices _databaseServices;
+
+  @override
+  void initState() {
+    super.initState();
+    _authServices = _getIt.get<AuthServices>();
+    _databaseServices = _getIt.get<DatabaseServices>();
+
+    _updateBookmarkStatus();
+  }
+
+  void _updateBookmarkStatus() async {
+    final isBookmarked = await _databaseServices.isTechnicianInCart(
+        _authServices.user!.uid, widget.technicianProfile.tid);
+    setState(() {
+      _isBookmarked = isBookmarked;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,14 +103,20 @@ class _TechnicianCardState extends State<TechnicianCard> {
                     ),
                     IconButton(
                       onPressed: () {
+                        if (_isBookmarked) {
+                          _databaseServices.remooveTechniciansfromtCart(
+                              _authServices.user!.uid, widget.technicianProfile.tid);
+                        } else {
+                          _databaseServices.addTechnicianstoCart(
+                              _authServices.user!.uid, widget.technicianProfile.tid);
+                        }
                         setState(() {
                           _isBookmarked = !_isBookmarked; // Toggle the bookmark state
                         });
                       },
                       icon: Icon(
-                        _isBookmarked ? FontAwesomeIcons.bookmark :
-                        FontAwesomeIcons.solidBookmark,
-                        color:  Colors.blue,
+                        _isBookmarked ? FontAwesomeIcons.solidBookmark : FontAwesomeIcons.bookmark,
+                        color: Colors.blue,
                       ),
                     ),
                   ],
@@ -102,7 +131,7 @@ class _TechnicianCardState extends State<TechnicianCard> {
                         children: [
                           Text(
                             'Charge',
-                            style: TextStyle(fontSize: 12.0, color: Colors.grey,fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 12.0, color: Colors.grey, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             'Rs. 100', // Dynamic value
@@ -126,7 +155,7 @@ class _TechnicianCardState extends State<TechnicianCard> {
                         children: [
                           Text(
                             'Rating',
-                            style: TextStyle(fontSize: 12.0, color: Colors.grey,fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 12.0, color: Colors.grey, fontWeight: FontWeight.bold),
                           ),
                           Row(
                             children: [
@@ -160,7 +189,7 @@ class _TechnicianCardState extends State<TechnicianCard> {
                         children: [
                           Text(
                             'Reviews',
-                            style: TextStyle(fontSize: 12.0, color: Colors.grey,fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 12.0, color: Colors.grey, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             '100', // Dynamic value

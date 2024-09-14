@@ -57,5 +57,57 @@ class DatabaseServices{
     }
   }
 
+  Future<void> addTechnicianstoCart(String userId,String technicianId) async{
+    try {
+      final userDoc = await _usercollection?.doc(userId).get();
+
+      if (userDoc==null) {
+        print('User document not found');
+        return; // or handle this scenario as needed
+      }
+      await _usercollection?.doc(userId).update({
+        'cartTechnicians': FieldValue.arrayUnion([technicianId])
+      });
+    } catch (e) {
+      print('Error adding technician to cart: $e');
+    }
+  }
+
+  Future<void> remooveTechniciansfromtCart(String userId,String technicianId) async {
+    try {
+      await _usercollection?.doc(userId).update({
+        'cartTechnicians':FieldValue.arrayRemove([technicianId])
+      });
+    } catch (e) {
+      print('Error remooving technician to cart: $e');
+    }
+  }
+
+  Future<bool> isTechnicianInCart(String userId, String technicianId) async {
+    try {
+      final userDoc = await _usercollection?.doc(userId).get();
+
+      if (userDoc == null || !userDoc.exists) return false;
+
+      // Retrieve the UserProfile instance from the document
+      final userProfile = userDoc.data() as UserProfile?;
+
+      if (userProfile == null) return false;
+
+      // Convert cartTechnicians from List<dynamic> to List<String>
+      final List<String> cartTechnicians = (userProfile.cartTechnicians ?? [])
+          .map((e) => e.toString())
+          .toList();
+
+      return cartTechnicians.contains(technicianId);
+    } catch (e) {
+      print('Error checking technician in cart: $e');
+      return false;
+    }
+  }
+
+
+
+
 
 }
