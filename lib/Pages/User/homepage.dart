@@ -202,7 +202,9 @@ class HomepageState extends State<Homepage> {
             SizedBox(width: MediaQuery.of(context).size.width * 0.015),
             Column(
               children: [
-                IconButton(onPressed: (){}, icon: Icon(Icons.shopping_cart_rounded,size: 33,color: Colors.white,)),
+                IconButton(onPressed: (){
+                  _navigationService.pushnamed("/cartpage");
+                }, icon: Icon(Icons.shopping_cart_rounded,size: 33,color: Colors.white,)),
                 Text("Cart",style: TextStyle(color: Colors.white),)
               ],
             ),

@@ -57,33 +57,33 @@ class DatabaseServices{
     }
   }
 
-  Future<void> addTechnicianstoCart(String userId,String technicianId) async{
+  Future<void> addTechnicianstoCart(String userId, TechnicianProfile technician) async {
     try {
       final userDoc = await _usercollection?.doc(userId).get();
 
-      if (userDoc==null) {
+      if (userDoc == null) {
         print('User document not found');
         return; // or handle this scenario as needed
       }
       await _usercollection?.doc(userId).update({
-        'cartTechnicians': FieldValue.arrayUnion([technicianId])
+        'cartTechnicians': FieldValue.arrayUnion([technician.toJson()])
       });
     } catch (e) {
       print('Error adding technician to cart: $e');
     }
   }
 
-  Future<void> remooveTechniciansfromtCart(String userId,String technicianId) async {
+  Future<void> remooveTechniciansfromtCart(String userId, TechnicianProfile technician) async {
     try {
       await _usercollection?.doc(userId).update({
-        'cartTechnicians':FieldValue.arrayRemove([technicianId])
+        'cartTechnicians': FieldValue.arrayRemove([technician.toJson()])
       });
     } catch (e) {
       print('Error remooving technician to cart: $e');
     }
   }
 
-  Future<bool> isTechnicianInCart(String userId, String technicianId) async {
+  Future<bool> isTechnicianInCart(String userId, String technicianID) async {
     try {
       final userDoc = await _usercollection?.doc(userId).get();
 
@@ -94,15 +94,36 @@ class DatabaseServices{
 
       if (userProfile == null) return false;
 
-      // Convert cartTechnicians from List<dynamic> to List<String>
-      final List<String> cartTechnicians = (userProfile.cartTechnicians ?? [])
-          .map((e) => e.toString())
-          .toList();
+      // Check if the cartTechnicians list contains the technician ID
+      final List<dynamic> cartTechnicians = userProfile.cartTechnicians;
 
-      return cartTechnicians.contains(technicianId);
+      return cartTechnicians.any((technician)=>technician.tid==technicianID); // Check for technician ID as String
     } catch (e) {
       print('Error checking technician in cart: $e');
       return false;
+    }
+  }
+
+  Future<List<TechnicianProfile>> getCartTechnicians(String userID) async {
+    try {
+      final userDoc = await _usercollection?.doc(userID).get();
+
+      // Check if the document exists
+      if (userDoc==null) {
+        // Handle the case where the user document does not exist
+        return [];
+      }
+
+      final userProfile = userDoc.data() as UserProfile?;
+
+      // Ensure userProfile is not null and has a cartTechnicians list
+      final List<TechnicianProfile> cartTechnicians = userProfile?.cartTechnicians ?? [];
+
+      return cartTechnicians;
+    } catch (e) {
+      // Handle any errors that might occur during the fetch
+      print('Error fetching cart technicians: $e');
+      return [];
     }
   }
 

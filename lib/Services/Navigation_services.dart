@@ -10,6 +10,7 @@ import 'package:profixer/Pages/User/login_page.dart';
 import 'package:profixer/Pages/User/registration_page.dart';
 
 import '../Pages/Technician/technician_registration.dart';
+import '../Pages/User/CartPage.dart';
 
 
 class NavigationService {
@@ -23,6 +24,7 @@ class NavigationService {
     "/technician_registration":(context)=>TechnicianRegistration(),
     "/userhome":(context)=>Homepage(),
     "/allservicecardpage":(context)=>AllServicesPage(),
+    "/cartpage":(context)=>CartPage(),
   };
 
   GlobalKey<NavigatorState>? get navigatorkey{

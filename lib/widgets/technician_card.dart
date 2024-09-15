@@ -102,13 +102,13 @@ class _TechnicianCardState extends State<TechnicianCard> {
                       ],
                     ),
                     IconButton(
-                      onPressed: () {
+                      onPressed: () async{
                         if (_isBookmarked) {
-                          _databaseServices.remooveTechniciansfromtCart(
-                              _authServices.user!.uid, widget.technicianProfile.tid);
+                          await _databaseServices.remooveTechniciansfromtCart(
+                              _authServices.user!.uid, widget.technicianProfile);
                         } else {
-                          _databaseServices.addTechnicianstoCart(
-                              _authServices.user!.uid, widget.technicianProfile.tid);
+                         await _databaseServices.addTechnicianstoCart(
+                              _authServices.user!.uid, widget.technicianProfile);
                         }
                         setState(() {
                           _isBookmarked = !_isBookmarked; // Toggle the bookmark state
