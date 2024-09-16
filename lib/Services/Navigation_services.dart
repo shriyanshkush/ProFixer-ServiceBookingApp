@@ -4,10 +4,12 @@ import 'package:path/path.dart';
 import 'package:profixer/Pages/Technician/techinician_frontpage.dart';
 import 'package:profixer/Pages/User/allServicescardpage.dart';
 import 'package:profixer/Pages/User/homepage.dart';
+import 'package:profixer/Pages/User/technicianInfo.dart';
 import 'package:profixer/Pages/User/technicianlistskillbased.dart';
 import 'package:profixer/Pages/beforeLogin.dart';
 import 'package:profixer/Pages/User/login_page.dart';
 import 'package:profixer/Pages/User/registration_page.dart';
+import 'package:profixer/models/tecnician_model.dart';
 
 import '../Pages/Technician/technician_registration.dart';
 import '../Pages/User/CartPage.dart';
@@ -63,6 +65,11 @@ class NavigationService {
         final service = settings.arguments as String;
         return MaterialPageRoute(
           builder: (context) => TechnicianListSkillBased(service: service),
+        );
+      case '/technicianinfo':
+        final technician = settings.arguments as TechnicianProfile;
+        return MaterialPageRoute(
+          builder: (context) => TechnicianInfoPage(technician: technician,),
         );
       default:
         return null; // Handle undefined routes

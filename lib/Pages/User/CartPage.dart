@@ -64,7 +64,7 @@ class CartPageState extends State<CartPage> {
       body: isLoading
           ? Center(child: CircularProgressIndicator()) // Show a loader while fetching data
           : technicians.isEmpty
-          ? Center(child: Text('Cart is Empty, Explore Services'))
+          ? Center(child: Text('Cart is Empty, Explore Services!',style: TextStyle(fontSize: 20),))
           : ListView.builder(
         itemCount: technicians.length,
         itemBuilder: (context, index) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:profixer/Services/Navigation_services.dart';
 import 'package:profixer/widgets/technician_card.dart';
 
 import '../../Services/database_services.dart';
@@ -20,6 +21,7 @@ class TechnicianListSkillBased extends StatefulWidget {
 class _TechnicianListSkillBasedState extends State<TechnicianListSkillBased> {
   final GetIt _getIt = GetIt.instance;
   late DatabaseServices _databaseServices;
+  late NavigationService _navigationService;
 
   List<TechnicianProfile> technicians = [];
   bool isLoading = true;
@@ -28,6 +30,7 @@ class _TechnicianListSkillBasedState extends State<TechnicianListSkillBased> {
   void initState() {
     super.initState();
     _databaseServices = _getIt.get<DatabaseServices>();
+    _navigationService=_getIt.get<NavigationService>();
     fetchTechnicians(); // Fetch technicians on initialization
   }
 
@@ -61,7 +64,11 @@ class _TechnicianListSkillBasedState extends State<TechnicianListSkillBased> {
              padding: const EdgeInsets.all(15.0),
              child: Column(
                children: [
-                 TechnicianCard(technicianProfile: technician),
+                 GestureDetector(
+                   onTap: (){
+                     _navigationService.pushnamed("/technicianinfo",arguments: technician);
+                   },
+                     child: TechnicianCard(technicianProfile: technician)),
                ],
              ),
            );

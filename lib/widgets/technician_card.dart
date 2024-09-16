@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:profixer/Services/auth_services.dart';
 import 'package:profixer/Services/database_services.dart';
+import '../Pages/User/CartPage.dart';
 import '../models/tecnician_model.dart';
 
 class TechnicianCard extends StatefulWidget {
@@ -38,6 +39,7 @@ class _TechnicianCardState extends State<TechnicianCard> {
     setState(() {
       _isBookmarked = isBookmarked;
     });
+
   }
 
   @override
@@ -113,6 +115,11 @@ class _TechnicianCardState extends State<TechnicianCard> {
                         setState(() {
                           _isBookmarked = !_isBookmarked; // Toggle the bookmark state
                         });
+                        // Optionally refresh the cart if it's on CartPage
+                        if (context.findAncestorWidgetOfExactType<CartPage>() != null) {
+                          (context.findAncestorStateOfType<CartPageState>()!)
+                              .fetchTechniciansCart();
+                        }
                       },
                       icon: Icon(
                         _isBookmarked ? FontAwesomeIcons.solidBookmark : FontAwesomeIcons.bookmark,
