@@ -45,7 +45,7 @@ class _TechnicianRegistrationPageState extends State<TechnicianRegistration> {
   String? selectedprevWorkName;
 
   String? name,email,password,phonenumber,expertise;
-  Map<String, List<String>> _selectedAvailability = {};
+  Map<String, List<Map<String, bool>>> _selectedAvailability= {};
 
   @override
   void initState() {

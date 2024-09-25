@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AvailabilitySelector extends StatefulWidget {
-  final Function(Map<String, List<String>>)? onAvailabilityChanged;
+  final Function(Map<String, List<Map<String, bool>>>)? onAvailabilityChanged;
 
   AvailabilitySelector({this.onAvailabilityChanged});
 
@@ -28,15 +28,17 @@ class _AvailabilitySelectorState extends State<AvailabilitySelector> {
     '4:00 PM - 6:00 PM'
   ];
 
-  Map<String, DayModel> _days = {};
+  Map<String, List<Map<String, bool>>> _availability = {};
 
   @override
   void initState() {
     super.initState();
-    _days = Map.fromIterable(
+
+    // Initialize each day with time slots set to false (unavailable)
+    _availability = Map.fromIterable(
       _daysOfWeek,
-      key: (day) => day as String,
-      value: (day) => DayModel(day: day as String),
+      key: (day) => day,
+      value: (day) => _timeSlots.map((slot) => {slot: false}).toList(),
     );
   }
 
@@ -47,26 +49,25 @@ class _AvailabilitySelectorState extends State<AvailabilitySelector> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: _daysOfWeek.map((day) {
-          final dayModel = _days[day]!;
           return ExpansionTile(
-            title: Text(dayModel.day),
-            children: _timeSlots.map((slot) {
-              bool isSelected = dayModel.selectedSlots.contains(slot);
+            title: Text(day),
+            children: _availability[day]!.map((slotMap) {
+              String timeSlot = slotMap.keys.first;
+              bool isSelected = slotMap[timeSlot]!;
               return CheckboxListTile(
-                title: Text(slot),
+                title: Text(timeSlot),
                 value: isSelected,
                 onChanged: (bool? value) {
                   setState(() {
-                    if (value == true) {
-                      _days[day]!.selectedSlots.add(slot);
-                    } else {
-                      _days[day]!.selectedSlots.remove(slot);
-                    }
+                    _availability[day]!.forEach((slot) {
+                      if (slot.containsKey(timeSlot)) {
+                        slot[timeSlot] = value!;
+                      }
+                    });
+
+                    // Notify parent widget about the change
                     if (widget.onAvailabilityChanged != null) {
-                      widget.onAvailabilityChanged!({
-                        for (var dm in _days.values)
-                          dm.day: dm.selectedSlots,
-                      });
+                      widget.onAvailabilityChanged!(_availability);
                     }
                   });
                 },
@@ -79,19 +80,7 @@ class _AvailabilitySelectorState extends State<AvailabilitySelector> {
   }
 
   // Optional: Method to retrieve availability
-  Map<String, List<String>> getAvailability() {
-    return {
-      for (var dm in _days.values) dm.day: dm.selectedSlots,
-    };
+  Map<String, List<Map<String, bool>>> getAvailability() {
+    return _availability;
   }
-}
-
-class DayModel {
-  final String day;
-  List<String> selectedSlots;
-
-  DayModel({
-    required this.day,
-    List<String>? selectedSlots,
-  }) : selectedSlots = selectedSlots ?? []; // Initialize with an empty list if null
 }

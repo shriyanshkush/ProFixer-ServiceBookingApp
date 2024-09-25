@@ -127,18 +127,18 @@ class HomepageState extends State<Homepage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Hey Shriyansh,",style: TextStyle(fontSize: 22),),
+                    Text("Hey Shriyansh,",style: TextStyle(fontSize: 21),),
                     SizedBox(height: 8,),
                     Row(
                       children: [
                         Text("What Services Do You",style: TextStyle(
-                          fontSize: 27,
+                          fontSize: 25,
                           fontWeight: FontWeight.bold,
                         ),),
                       ],
                     ),
                     Text("Need?",style: TextStyle(
-                      fontSize: 27,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold,
                     ),),
                   ],
@@ -211,7 +211,9 @@ class HomepageState extends State<Homepage> {
             SizedBox(width: MediaQuery.of(context).size.width * 0.015),
             Column(
               children: [
-                IconButton(onPressed: (){}, icon: Icon(Icons.calendar_month,size: 33,color: Colors.white,),),
+                IconButton(onPressed: (){
+                  _navigationService.pushnamed("/showbooking");
+                }, icon: Icon(Icons.calendar_month,size: 33,color: Colors.white,),),
                 Text("Booking",style: TextStyle(color: Colors.white),),
               ],
             ),

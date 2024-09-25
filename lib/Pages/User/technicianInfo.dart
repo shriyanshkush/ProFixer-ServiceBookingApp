@@ -1,120 +1,420 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:get_it/get_it.dart';
+import 'package:profixer/Services/Navigation_services.dart';
 import '../../models/tecnician_model.dart';
 
-class TechnicianInfoPage extends StatelessWidget {
+class TechnicianInfoPage extends StatefulWidget {
   final TechnicianProfile technician;
 
   TechnicianInfoPage({required this.technician});
 
   @override
+  _TechnicianInfoPageState createState() => _TechnicianInfoPageState();
+}
+
+class _TechnicianInfoPageState extends State<TechnicianInfoPage> {
+  String selectedView = 'availability'; // Toggle between 'availability' and 'reviews'
+  int selectedIndex = 0; // 0 for availability, 1 for reviews
+  final GetIt _getIt=GetIt.instance;
+  late NavigationService _navigationService;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _navigationService=_getIt.get<NavigationService>();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${technician.name} - ${technician.skill}'),
+        title: Text(
+          'Details',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.blueAccent,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Container(
+          decoration: BoxDecoration(color: Colors.grey.shade300),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Technician Profile Image
               Center(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
                   child: Image.network(
-                    technician.pfpURL ?? 'https://via.placeholder.com/150',
-                    width: 120,
-                    height: 120,
+                    widget.technician.pfpURL ?? 'https://via.placeholder.com/150',
+                    height: 220,
+                    width: 200,
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
-              SizedBox(height: 16.0),
-              // Technician Name and Skill
-              Text(
-                technician.name,
-                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8.0),
-              Text(
-                technician.skill,
-                style: TextStyle(fontSize: 18.0, color: Colors.blueGrey),
-              ),
-              SizedBox(height: 16.0),
-              // Rating and Phone Number
-              Row(
-                children: [
-                  Icon(
-                    FontAwesomeIcons.star,
-                    color: Colors.yellow[700],
-                    size: 18.0,
+              // Technician Profile Card
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30), // Top-left corner radius
+                    topRight: Radius.circular(30), // Top-right corner radius
                   ),
-                  SizedBox(width: 8.0),
-                  Text(
-                    '${technician.rating} Rating',
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  Spacer(),
-                  Icon(
-                    FontAwesomeIcons.phone,
-                    color: Colors.blue,
-                    size: 18.0,
-                  ),
-                  SizedBox(width: 8.0),
-                  Text(
-                    technician.phoneNumber,
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16.0),
-              // Availability
-              Text(
-                'Availability',
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8.0),
-              ...technician.availability.entries.map((entry) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        entry.key,
-                        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          // Name, Skill, Rating, and Price
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "${widget.technician.skill} Services",
+                                      style: TextStyle(
+                                          fontSize: 25,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.share,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  widget.technician.name,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on,
+                                      color: Colors.grey[700],
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Container(
+                                      width: 325,
+                                      child: Text(
+                                        "5678 Mango Avenue, Mumbai, Maharashtra, 400001, India",
+                                        style: TextStyle(color: Colors.grey[700]),
+                                        softWrap: true,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "₹",
+                                          style: TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        ),
+                                        Text('100/hour',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.grey[600])),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          FontAwesomeIcons.solidStar,
+                                          color: Colors.yellow[700],
+                                          size: 18,
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          '${widget.technician.rating} Rating',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.grey[600]),
+                                        ),
+                                        SizedBox(width: 10),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        entry.value.join(', '),
-                        style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedView = 'availability';
+                                selectedIndex = 0; // Set selected index for availability
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Availability",
+                                  style: TextStyle(
+                                    color: selectedIndex == 0
+                                        ? Colors.blue
+                                        : Colors.black, // Change color based on selection
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                if (selectedIndex == 0) // Show underline when selected
+                                  Container(
+                                    width: 80,
+                                    height: 2,
+                                    color: Colors.blue,
+                                  ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 30),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedView = 'reviews';
+                                selectedIndex = 1; // Set selected index for reviews
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Reviews",
+                                  style: TextStyle(
+                                    color: selectedIndex == 1
+                                        ? Colors.blue
+                                        : Colors.black, // Change color based on selection
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                if (selectedIndex == 1) // Show underline when selected
+                                  Container(
+                                    width: 80,
+                                    height: 2,
+                                    color: Colors.blue,
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        height: 2,
+                        width: 400,
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade50,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      // Show either availability or reviews based on toggle selection
+                      selectedView == 'availability'
+                          ? _buildAvailabilitySection()
+                          : _buildReviewsSection(),
+                      SizedBox(height: 5),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(color: Colors.white),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 60, vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          child: Text(
+                            "Message",
+                            style: TextStyle(color: Colors.white),
+                          )),
+                      SizedBox(width: 11),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Handle booking action
+                         _navigationService.pushnamed("/bookingpage",arguments: widget.technician);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 60, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: Text('Book Now',
+                            style: TextStyle(color: Colors.white)),
                       ),
                     ],
                   ),
-                );
-              }).toList(),
-              SizedBox(height: 16.0),
-              // Booking Button
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Handle booking action
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
-                    textStyle: TextStyle(fontSize: 18.0),
-                  ),
-                  child: Text('Book Now'),
                 ),
-              ),
+              )
             ],
           ),
         ),
       ),
     );
+  }
+
+  // Build Availability Section
+  Widget _buildAvailabilitySection() {
+    final now = DateTime.now();
+    String currentDay = '';
+
+    switch (now.weekday) {
+      case 1:
+        currentDay = 'Monday';
+        break;
+      case 2:
+        currentDay = 'Tuesday';
+        break;
+      case 3:
+        currentDay = 'Wednesday';
+        break;
+      case 4:
+        currentDay = 'Thursday';
+        break;
+      case 5:
+        currentDay = 'Friday';
+        break;
+      case 6:
+        currentDay = 'Saturday';
+        break;
+      case 7:
+        currentDay = 'Sunday';
+        break;
+    }
+
+    if (widget.technician.availability.containsKey(currentDay)) {
+      final availableSlots = widget.technician.availability[currentDay]!;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Availability for Today ($currentDay)',
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+          SizedBox(height: 8.0),
+          ...availableSlots.map((slot) {
+            String timeSlot = slot.keys.first; // Extract the time slot
+            bool isAvailable = slot.values.first; // Extract availability status
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(timeSlot,
+                      style: TextStyle(fontSize: 16.0, color: Colors.grey[600])),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
+                    decoration: BoxDecoration(
+                      color: isAvailable ? Colors.green : Colors.red,
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    child: Text(
+                      isAvailable ? 'Available' : 'Not Available',
+                      style: TextStyle(fontSize: 12.0, color: Colors.white),
+                    ),
+                  )
+                ],
+              ),
+            );
+          }).toList(),
+        ],
+      );
+    } else {
+      return Text(
+        'No Availability for Today ($currentDay)',
+        style: TextStyle(
+            fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.red),
+      );
+    }
+  }
+
+  // Build Reviews Section
+  Widget _buildReviewsSection() {
+    if (widget.technician.reviews == null || widget.technician.reviews!.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 16.0),
+        child: Text('No reviews yet.', style: TextStyle(color: Colors.grey)),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Customer Reviews',
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+        SizedBox(height: 8.0),
+        ...widget.technician.reviews!.map((review) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(review.reviewerName,
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text(review.reviewText),
+                      SizedBox(height: 4.0),
+                      Text(
+                        _formatTimestamp(review.timestamp),
+                        style: TextStyle(fontSize: 12.0, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+      ],
+    );
+  }
+
+  String _formatTimestamp(DateTime timestamp) {
+    // Format the timestamp as needed, e.g., "Jan 1, 2023"
+    return '${timestamp.day}/${timestamp.month}/${timestamp.year}';
+  }
+
+
+  void _bookSlot(String slot) {
+    // Handle the booking logic
+    print("Booking slot: $slot");
   }
 }

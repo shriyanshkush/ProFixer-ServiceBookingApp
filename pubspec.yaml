@@ -46,6 +46,7 @@ dependencies:
   cloud_firestore: ^5.2.0
   delightful_toast: ^1.1.0
   font_awesome_flutter: ^10.7.0
+  uuid: ^4.5.0
 
 dev_dependencies:
   flutter_test:

@@ -11,8 +11,10 @@ import 'package:profixer/Pages/User/login_page.dart';
 import 'package:profixer/Pages/User/registration_page.dart';
 import 'package:profixer/models/tecnician_model.dart';
 
+import '../Pages/Booking/booking_page.dart';
 import '../Pages/Technician/technician_registration.dart';
 import '../Pages/User/CartPage.dart';
+import '../Pages/User/showbooking.dart';
 
 
 class NavigationService {
@@ -27,6 +29,7 @@ class NavigationService {
     "/userhome":(context)=>Homepage(),
     "/allservicecardpage":(context)=>AllServicesPage(),
     "/cartpage":(context)=>CartPage(),
+    "/showbooking":(context)=>ShowBookings(),
   };
 
   GlobalKey<NavigatorState>? get navigatorkey{
@@ -70,6 +73,11 @@ class NavigationService {
         final technician = settings.arguments as TechnicianProfile;
         return MaterialPageRoute(
           builder: (context) => TechnicianInfoPage(technician: technician,),
+        );
+      case '/bookingpage':
+        final technician = settings.arguments as TechnicianProfile;
+        return MaterialPageRoute(
+          builder: (context) => BookingForm(technician: technician,),
         );
       default:
         return null; // Handle undefined routes

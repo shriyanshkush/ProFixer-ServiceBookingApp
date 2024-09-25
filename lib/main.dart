@@ -1,10 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:profixer/Pages/beforeLogin.dart';
 import 'package:profixer/Pages/User/login_page.dart';
 import 'package:get_it/get_it.dart';
 import 'package:profixer/Services/Navigation_services.dart';
 import 'package:profixer/Services/register_services.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +30,9 @@ class profixer extends StatelessWidget {
       navigatorKey: _navigationService.navigatorkey,
       title: "ProFixer",
       theme: ThemeData(
+        textTheme: GoogleFonts.nunitoSansTextTheme(
+          Theme.of(context).textTheme,
+        ),
         primaryColor: Color(0xFF1E88E5),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue.shade400),
         appBarTheme: AppBarTheme(
