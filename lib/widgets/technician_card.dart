@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:profixer/Services/auth_services.dart';
 import 'package:profixer/Services/database_services.dart';
 import '../Pages/User/CartPage.dart';
+import '../Pages/User/homepage.dart';
 import '../models/tecnician_model.dart';
 
 class TechnicianCard extends StatefulWidget {
@@ -119,6 +120,10 @@ class _TechnicianCardState extends State<TechnicianCard> {
                         if (context.findAncestorWidgetOfExactType<CartPage>() != null) {
                           (context.findAncestorStateOfType<CartPageState>()!)
                               .fetchTechniciansCart();
+                        }
+                        if (context.findAncestorWidgetOfExactType<Homepage>() != null) {
+                          (context.findAncestorStateOfType<HomepageState>()!)
+                              .fetchTopTechnicians();
                         }
                       },
                       icon: Icon(

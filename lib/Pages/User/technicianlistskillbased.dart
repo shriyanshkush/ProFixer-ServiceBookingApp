@@ -55,7 +55,7 @@ class _TechnicianListSkillBasedState extends State<TechnicianListSkillBased> {
       body: isLoading
           ? Center(child: CircularProgressIndicator()) // Show a loader while fetching data
           : technicians.isEmpty
-          ? Center(child: Text('No technicians found for ${widget.service}'))
+          ? Center(child: Text('No technicians found for ${widget.service}',style: TextStyle(fontSize: 20),))
           : ListView.builder(
            itemCount: technicians.length,
            itemBuilder: (context, index) {

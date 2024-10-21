@@ -60,7 +60,7 @@ class _TechinicianFrontpageState extends State<TechinicianFrontpage> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: (){
-                  _navigationService.pushnamed("/login");
+                  _navigationService.pushnamed("/technician_login");
                 },
                 child: Center(
                   child: Text(

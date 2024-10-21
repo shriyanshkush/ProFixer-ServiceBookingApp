@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:profixer/Pages/User/technicianInfo.dart';
 import 'package:profixer/Services/Alert_services.dart';
+import 'package:profixer/Services/Navigation_services.dart';
 import 'package:profixer/Services/auth_services.dart';
 import 'package:profixer/Services/database_services.dart';
 import 'package:profixer/widgets/technician_card.dart';
@@ -27,6 +28,7 @@ class _BookingFormState extends State<BookingForm> {
   late DatabaseServices _databaseServices;
   late AlertServices _alertServices;
   late AuthServices _authServices;
+  late NavigationService _navigationService;
   String? _selectedTimeSlot;
   DateTime _bookingDate = DateTime.now();
   bool _isConfirmed = false;
@@ -44,6 +46,7 @@ class _BookingFormState extends State<BookingForm> {
     super.initState();
     _databaseServices = _getIt.get<DatabaseServices>();
     _alertServices=_getIt.get<AlertServices>();
+    _navigationService=_getIt.get<NavigationService>();
     _authServices=_getIt.get<AuthServices>();
     _setAvailableTimeSlots();
   }
@@ -299,7 +302,7 @@ class _BookingFormState extends State<BookingForm> {
 
                       try {
                         // Save the booking to your database or API
-                        await _databaseServices.addbookingtouser(_authServices.user!.uid, booking);
+                        await _databaseServices.addbookingtouser(_authServices.user!.uid,widget.technician.tid ,booking);
 
                         // Update the technician's availability
                         _updateTechnicianAvailability();
@@ -310,6 +313,7 @@ class _BookingFormState extends State<BookingForm> {
                           icon: Icons.check_circle,
                         );
 
+                        _navigationService.pushnamed("/userhome");
                       } catch (e) {
                         // Show an error message if something goes wrong
                         _alertServices.showToast(

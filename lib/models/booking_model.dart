@@ -11,6 +11,8 @@ class Booking {
   final String homeAddress;
   final String phoneNumber;
   final String specialInstructions;
+  final bool workStatus;
+
 
   Booking({
     required this.BookingId,
@@ -23,6 +25,7 @@ class Booking {
     required this.homeAddress,
     required this.phoneNumber,
     required this.specialInstructions,
+    this.workStatus=false,
   });
 
   factory Booking.fromJson(Map<String, dynamic> json) {
@@ -37,6 +40,7 @@ class Booking {
       homeAddress: json['homeAddress'],
       phoneNumber: json['phoneNumber'],
       specialInstructions: json['specialInstructions'],
+      workStatus: json['workStatus'],
     );
   }
 
@@ -52,6 +56,7 @@ class Booking {
       'homeAddress': homeAddress,
       'phoneNumber': phoneNumber,
       'specialInstructions': specialInstructions,
+      'workStatus':workStatus,
     };
   }
 }

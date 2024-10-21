@@ -42,11 +42,15 @@ class _TechnicianInfoPageState extends State<TechnicianInfoPage> {
             children: [
               Center(
                 child: ClipRRect(
-                  child: Image.network(
-                    widget.technician.pfpURL ?? 'https://via.placeholder.com/150',
-                    height: 220,
-                    width: 200,
-                    fit: BoxFit.cover,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    heightFactor: 0.57,
+                    child: Image.network(
+                      widget.technician.pfpURL ?? 'https://via.placeholder.com/150',
+                      height: 380,
+                      width: 200,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -63,7 +67,7 @@ class _TechnicianInfoPageState extends State<TechnicianInfoPage> {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      SizedBox(height: 8),
+                      SizedBox(height: 3),
                       Row(
                         children: [
                           // Name, Skill, Rating, and Price
@@ -162,7 +166,7 @@ class _TechnicianInfoPageState extends State<TechnicianInfoPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -245,21 +249,8 @@ class _TechnicianInfoPageState extends State<TechnicianInfoPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 60, vertical: 15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
-                          child: Text(
-                            "Message",
-                            style: TextStyle(color: Colors.white),
-                          )),
                       SizedBox(width: 11),
                       ElevatedButton(
                         onPressed: () {
@@ -368,7 +359,7 @@ class _TechnicianInfoPageState extends State<TechnicianInfoPage> {
     if (widget.technician.reviews == null || widget.technician.reviews!.isEmpty) {
       return Padding(
         padding: const EdgeInsets.only(top: 16.0),
-        child: Text('No reviews yet.', style: TextStyle(color: Colors.grey)),
+        child: Text('No reviews yet.', style: TextStyle(color: Colors.grey,fontSize: 18)),
       );
     }
 

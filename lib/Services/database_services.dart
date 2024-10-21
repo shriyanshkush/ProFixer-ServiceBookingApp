@@ -34,12 +34,98 @@ class DatabaseServices{
     await _techniciancollection?.doc(technician.tid).set(technician);
   }
 
+  Future<bool> decideUser(String userId) async{
+    final techniciandoc =await _techniciancollection?.doc(userId).get();
+    if(techniciandoc!=null && techniciandoc.exists) {
+      return true;
+    } else{
+      return false;
+    }
+  }
+
+  // Fetch all technicians with verificationStatus = "Pending"
+  Future<List<TechnicianProfile>> fetchPendingTechnicians() async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('technicians') // Replace with your collection name
+          .where('verificationStatus', isEqualTo: 'Pending') // Filter for pending status
+          .get();
+
+      if (querySnapshot == null || querySnapshot.docs.isEmpty) {
+        print('No pending technicians found');
+        return [];
+      }
+
+      print('Query snapshot: ${querySnapshot.docs.length} documents');
+      final List<TechnicianProfile> pendingTechnicians = querySnapshot.docs
+          .map((doc) => TechnicianProfile.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+
+      print('Technicians: $pendingTechnicians');
+
+      return pendingTechnicians;
+    } catch (e) {
+      print('Error fetching pending technicians: $e');
+      return [];
+    }
+  }
+
+  void approveTechnician(String technicianID) async {
+    await _techniciancollection?.doc(technicianID).update({
+      'verificationStatus': 'aprooved', // Directly update the field with 'approved' status
+    }).then((_) {
+      print('Technician approved successfully');
+    }).catchError((error) {
+      print('Failed to approve technician: $error');
+    });
+  }
+
+  void rejectTechnician(String technicianID) async {
+    await _techniciancollection?.doc(technicianID).update({
+      'verificationStatus': 'reject', // Directly update the field with 'approved' status
+    }).then((_) {
+      print('Technician rejected successfully');
+    }).catchError((error) {
+      print('Failed to reject technician: $error');
+    });
+  }
+
+  Future<TechnicianProfile> getCurrentTechnician(String technicianId) async {
+    // Fetch the document from Firestore
+    final techdocSnapshot = await _techniciancollection?.doc(technicianId).get();
+
+    // Check if the document exists
+    if (techdocSnapshot != null && techdocSnapshot.exists) {
+      // Extract the data from the snapshot
+      final TechnicianProfile technicianProfile = techdocSnapshot.data() as TechnicianProfile;
+      return technicianProfile;
+    } else {
+      throw Exception("Technician data not found");
+    }
+  }
+
+  Future<UserProfile> getCurrentUser(String userId) async {
+    // Fetch the document from Firestore
+    final userdocSnapshot = await _usercollection?.doc(userId).get();
+
+    // Check if the document exists
+    if (userdocSnapshot != null && userdocSnapshot.exists) {
+      // Extract the data from the snapshot
+      final UserProfile userProfile = userdocSnapshot.data() as UserProfile;
+      return userProfile;
+    } else {
+      throw Exception("User data not found");
+    }
+  }
+
+
 
   Future<List<TechnicianProfile>> getTechniciansBySkill(String skill) async {
     try {
       print('Searching for technicians with skill: $skill');
       final querySnapshot = await _techniciancollection
           ?.where('skill', isEqualTo: skill)
+      .where('verificationStatus',isEqualTo: "aprooved")
           .get();
 
       if (querySnapshot == null) {
@@ -59,6 +145,50 @@ class DatabaseServices{
       return [];
     }
   }
+
+  Future<List<TechnicianProfile>> getTopTechniciansByService() async {
+    try {
+      // Fetch all approved technicians
+      final querySnapshot = await _techniciancollection
+          ?.where('verificationStatus', isEqualTo: 'aprooved')
+          .get();
+
+      if (querySnapshot == null || querySnapshot.docs.isEmpty) {
+        print('No approved technicians found');
+        return [];
+      }
+
+      // Create a map to store the highest-rated technician for each service
+      Map<String, TechnicianProfile> topTechniciansByService = {};
+
+      // Iterate through the technicians
+      for (var doc in querySnapshot.docs) {
+        final technician = doc.data() as TechnicianProfile;
+
+        // Check if this service already has a technician
+        if (topTechniciansByService.containsKey(technician.skill)) {
+          // Compare the ratings and replace if the current technician has a higher rating
+          if (technician.rating > topTechniciansByService[technician.skill]!.rating) {
+            topTechniciansByService[technician.skill] = technician;
+          }
+        } else {
+          // Add the first technician for this service
+          topTechniciansByService[technician.skill] = technician;
+        }
+      }
+
+      // Convert the map to a list of technicians
+      List<TechnicianProfile> topTechnicians = topTechniciansByService.values.toList();
+
+      print('Top technicians by service: $topTechnicians');
+
+      return topTechnicians;
+    } catch (e) {
+      print('Error fetching top technicians by service: $e');
+      return [];
+    }
+  }
+
 
   Future<void> addTechnicianstoCart(String userId, TechnicianProfile technician) async {
     try {
@@ -151,19 +281,27 @@ class DatabaseServices{
   }
 
   //Implement booking backend
-  Future<void> addbookingtouser(String userId, Booking booking) async {
+  Future<void> addbookingtouser(String userId,String technicianId, Booking booking) async {
     try {
       final userDoc = await _usercollection?.doc(userId).get();
+      final technicianDoc = await _techniciancollection?.doc(technicianId).get();
 
       if (userDoc == null) {
         print('User document not found');
         return; // or handle this scenario as needed
       }
+      if (technicianDoc == null) {
+        print('Technician document not found');
+        return; // or handle this scenario as needed
+      }
       await _usercollection?.doc(userId).update({
         'bookings': FieldValue.arrayUnion([booking.toJson()])
       });
+      await _techniciancollection?.doc(technicianId).update({
+        'bookings': FieldValue.arrayUnion([booking.toJson()])
+      });
     } catch (e) {
-      print('Error adding booking to user: $e');
+      print('Error adding booking : $e');
     }
   }
 
@@ -197,7 +335,5 @@ class DatabaseServices{
       return [];
     }
   }
-
-
 
 }

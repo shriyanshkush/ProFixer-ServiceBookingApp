@@ -228,7 +228,9 @@ class TechinicianLoginPageState extends State<TechinicianLogin> {
                   children: [
                     Text("Don't have an account? "),
                     GestureDetector(
-                      onTap: _navigateToregister,
+                      onTap:(){
+                        _navigationService.pushnamed("/technician_registration");
+                      },
                       child: Text(
                         "Register",
                         style: TextStyle(
@@ -253,13 +255,10 @@ class TechinicianLoginPageState extends State<TechinicianLogin> {
     bool result= await _authServices.logIn(emailString!, passwordString!);
     print(result);
     if(result) {
-      _navigationService.pushReplacementnamed("/userhome");
+      _navigationService.pushReplacementnamed("/technicianhomepage");
     } else{
       _alertServices.showToast(text: "Failed to login, Please try again!",
           icon: Icons.error);
     }
-  }
-  void _navigateToregister() {
-    _navigationService.pushnamed("/registration");
   }
 }

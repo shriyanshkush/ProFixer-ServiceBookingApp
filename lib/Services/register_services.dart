@@ -5,6 +5,7 @@ import 'package:profixer/Services/Navigation_services.dart';
 import 'package:profixer/Services/auth_services.dart';
 import 'package:profixer/Services/database_services.dart';
 import 'package:profixer/Services/storage_services.dart';
+import 'package:profixer/Services/stripe_services.dart';
 import 'Meadia_services.dart';
 
 Future<void> registerServices() async{
@@ -15,5 +16,6 @@ Future<void> registerServices() async{
   getIt.registerSingleton<DatabaseServices>(DatabaseServices());
   getIt.registerSingleton<AlertServices>(AlertServices());
   getIt.registerSingleton<StorageServices>(StorageServices());
+  getIt.registerSingleton<StripeServices>(StripeServices());
 }
 

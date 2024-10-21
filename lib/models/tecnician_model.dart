@@ -1,4 +1,5 @@
 import '../../models/review_model.dart';
+import 'booking_model.dart';
 
 class TechnicianProfile {
   String tid;
@@ -11,6 +12,8 @@ class TechnicianProfile {
   String? proofOfWork;
   final Map<String, List<Map<String, bool>>> availability;
   List<Review> reviews; // Changed to a non-nullable list with a default value
+  List<Booking> bookings;
+  String verificationStatus;
 
   TechnicianProfile({
     required this.tid,
@@ -23,6 +26,8 @@ class TechnicianProfile {
     this.proofOfWork,
     required this.availability,
     this.reviews = const [], // Default to an empty list
+    this.bookings=const [],
+    this.verificationStatus= "Pending",
   });
 
   // Factory method to create a TechnicianProfile from a JSON object
@@ -41,6 +46,9 @@ class TechnicianProfile {
         );
       },
     );
+    var bookingList=(json['bookings'] as List<dynamic>?)?.map((item){
+      return Booking.fromJson(item as Map<String,dynamic>);
+    }).toList()?? [];
 
     // Parse other fields with null checks and default values where necessary
     return TechnicianProfile(
@@ -56,6 +64,8 @@ class TechnicianProfile {
       reviews: (json['reviews'] as List<dynamic>? ?? [])
           .map((review) => Review.fromJson(review))
           .toList(), // Default to empty list if null
+      bookings: bookingList,
+      verificationStatus: json['verificationStatus'],
     );
   }
 
@@ -82,6 +92,8 @@ class TechnicianProfile {
           'timestamp': review.timestamp.toIso8601String(), // Convert timestamp to string
         };
       }).toList(), // Convert reviews to JSON if not null
+      'bookings':bookings.map((booking) => booking.toJson()).toList(),
+    'verificationStatus':verificationStatus,
     };
   }
 }

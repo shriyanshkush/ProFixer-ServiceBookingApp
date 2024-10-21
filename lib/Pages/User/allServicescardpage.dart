@@ -1,56 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:profixer/Services/Navigation_services.dart';
-import 'package:profixer/widgets/service_card.dart';
 
-class AllServicesPage extends StatefulWidget {
+import '../../widgets/service_card.dart';
+
+class AllservicesPage extends StatefulWidget {
+
   @override
-  State<AllServicesPage> createState() => _AllServicesPageState();
+  State<AllservicesPage> createState() => _ServicesPageState();
 }
 
-class _AllServicesPageState extends State<AllServicesPage> {
+class _ServicesPageState extends State<AllservicesPage> {
   final GetIt _getIt=GetIt.instance;
-
   late NavigationService _navigationService;
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     _navigationService=_getIt.get<NavigationService>();
   }
-
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('All Services'),
+        title: Text("Choose a Service"),
+        centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.count(
-          crossAxisCount: 2, // Number of cards per row
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          children: [
-            ServiceCard(onTap: () {},
-                imagepath: 'assets/images/electrician.jpeg', service: "Electrics"),
-            ServiceCard(onTap: () {},
-                imagepath: 'assets/images/Hvac.jpeg', service: "HVAC Services"),
-            ServiceCard(onTap: () {},
-                imagepath: 'assets/images/painting.jpeg', service: "Painting"),
-            ServiceCard(onTap: () {},
-                imagepath: 'assets/images/plumber.jpg', service: "Plumbing"),
-            ServiceCard(onTap: () {},
-                imagepath: 'assets/images/carpentar.jpg', service: "Carpentry"),
-            ServiceCard(onTap: () {},
-                imagepath: 'assets/images/repair.jpeg', service: "Repair"),
-            ServiceCard(onTap: () {},
-                imagepath: 'assets/images/pestcontrol.jpeg', service: "Pest Control"),
-            ServiceCard(onTap: () {},
-                imagepath: 'assets/images/cleaning.jpg', service: "Cleaning"),
-          ],
+        padding: const EdgeInsets.all(16.0),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3, // Display 3 items in a row
+            crossAxisSpacing: 15.0, // Space between columns
+            mainAxisSpacing: 20.0, // Space between rows
+          ),
+          itemCount: services.length,
+          itemBuilder: (context, index) {
+            final service = services[index];
+            return ServiceCard(
+              onTap: () {
+                _navigationService.pushnamed(
+                  '/technicianlistskillbased',
+                  arguments: service['name'],
+                );
+              },
+              imagepath: service['imagepath']!,
+              service: service['name']!,
+            );
+          },
         ),
       ),
     );
   }
 }
+
+// data for services
+final List<Map<String, String>> services = [
+  {'imagepath': 'assets/images/cleaning.png', 'name': 'Cleaning'},
+  {'imagepath': 'assets/images/plumbing.png', 'name': 'Plumbing'},
+  {'imagepath': 'assets/images/repairing.jpeg', 'name': 'Repair'},
+  {'imagepath': 'assets/images/painter.png', 'name': 'Painting'},
+  {'imagepath': 'assets/images/electricity.png', 'name': 'Electrics'},
+  {'imagepath': 'assets/images/carpenter.png', 'name': 'Carpentry'},
+  {'imagepath': 'assets/images/Hvac.png', 'name': 'HVAC Services'},
+  {'imagepath': 'assets/images/pest control.png', 'name': 'Pest Control'},
+  {'imagepath': 'assets/images/washing.png', 'name': 'Washing'},
+];

@@ -402,7 +402,7 @@ class _TechnicianRegistrationPageState extends State<TechnicianRegistration> {
 
 
   void _navigateToLogin() {
-    _navigationService.pushnamed("/login");
+    _navigationService.pushnamed("/technician_login");
   }
   Widget _pfpselectionfeild () {
     return GestureDetector(

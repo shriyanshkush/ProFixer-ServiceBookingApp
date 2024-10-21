@@ -20,6 +20,7 @@ class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController emailcontroller;
   late TextEditingController passwordcontroller;
+  bool isLoading=false;
   String? email,password;
 
   @override
@@ -163,7 +164,7 @@ class LoginPageState extends State<LoginPage> {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _login,
-                  child: Text(
+                  child: isLoading?CircularProgressIndicator():Text(
                     "Login",
                     style: TextStyle(color: Colors.white),
                   ),
@@ -248,16 +249,23 @@ class LoginPageState extends State<LoginPage> {
     _navigationService.pushnamed("/registration");
   }
   void _login() async{
+
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-    }
-    _formKey.currentState?.save();
-    bool result= await _authServices.logIn(email!, password!);
-    print(result);
-    if(result) {
-      _navigationService.pushReplacementnamed("/userhome");
-    } else{
-      _alertServices.showToast(text: "Failed to login, Please try again!",
-          icon: Icons.error);
+      _formKey.currentState?.save();
+      setState(() {
+        isLoading = true;
+      });
+      bool result= await _authServices.logIn(email!, password!);
+      print(result);
+      if(result) {
+        _navigationService.pushReplacementnamed("/userhome");
+      } else{
+        _alertServices.showToast(text: "Failed to login, Please try again!",
+            icon: Icons.error);
+      }
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 }

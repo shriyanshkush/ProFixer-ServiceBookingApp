@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:profixer/Pages/beforeLogin.dart';
 import 'package:profixer/Pages/User/login_page.dart';
@@ -7,12 +8,14 @@ import 'package:get_it/get_it.dart';
 import 'package:profixer/Services/Navigation_services.dart';
 import 'package:profixer/Services/register_services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:profixer/consts.dart';
 
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await registerServices();
+  Stripe.publishableKey=stripePublishableKey;
   runApp(profixer());
 }
 
@@ -38,9 +41,10 @@ class profixer extends StatelessWidget {
         appBarTheme: AppBarTheme(
           centerTitle: true,
           color: Color(0xFF1E88E5),
+          foregroundColor: Colors.white
         ),
       ),
-      initialRoute: "/userhome",
+      initialRoute: "/splashscreen",
       routes: _navigationService.routes,
       onGenerateRoute: _navigationService.generateRoute,
       home: Beforelogin(),

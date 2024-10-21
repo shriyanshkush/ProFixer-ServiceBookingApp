@@ -6,9 +6,11 @@ import 'package:profixer/Pages/User/technicianlistskillbased.dart';
 import 'package:profixer/Services/Navigation_services.dart';
 import 'package:profixer/Services/auth_services.dart';
 import 'package:profixer/Services/database_services.dart';
+import 'package:profixer/models/user_model.dart';
 import 'package:profixer/widgets/service_card.dart';
 
 import '../../models/tecnician_model.dart';
+import '../../widgets/technician_card.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -23,13 +25,53 @@ class HomepageState extends State<Homepage> {
   late final NavigationService _navigationService;
   late DatabaseServices _databaseServices;
   List<TechnicianProfile> technicians = [];
+  List<TechnicianProfile> topTechnicians = [];
+  late UserProfile currentuserProfile;
+  bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
     _authServices = _getIt.get<AuthServices>();
     _navigationService = _getIt.get<NavigationService>();
     _databaseServices=_getIt.get<DatabaseServices>();
+    fetchTopTechnicians();
+    fetchCurrentUser(_authServices.user!.uid);
   }
+  void fetchTopTechnicians() async {
+    try {
+      // Fetch the top technicians from the database
+      final technicians = await _databaseServices.getTopTechniciansByService();
+
+      // Update the state with the fetched technicians
+      setState(() {
+        topTechnicians = technicians;
+      });
+
+      // Log the fetched technicians for debugging
+      print("Printing top technicians: $topTechnicians");
+    } catch (error) {
+      // Handle any errors that occur during fetching
+      print("Error fetching top technicians: $error");
+    }
+  }
+
+  Future<void> fetchCurrentUser(String userId) async {
+    try {
+      final userProfile = await _databaseServices.getCurrentUser(userId);
+      setState(() {
+        currentuserProfile = userProfile;
+        isLoading = false; // Set loading to false after fetching data
+      });
+    } catch (error) {
+      print("Error fetching current user: $error");
+      setState(() {
+        isLoading = false; // Also stop loading on error
+      });
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +109,7 @@ class HomepageState extends State<Homepage> {
         ),
       ),
       bottomNavigationBar: _bottomNavigationBar(),
-      body: SingleChildScrollView(
+      body: isLoading ? Center(child: CircularProgressIndicator()) : SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
@@ -127,7 +169,8 @@ class HomepageState extends State<Homepage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Hey Shriyansh,",style: TextStyle(fontSize: 21),),
+
+                    Text("Hey, ${(currentuserProfile.name).split(' ')[0]} !",style: TextStyle(fontSize: 21),),
                     SizedBox(height: 8,),
                     Row(
                       children: [
@@ -191,7 +234,7 @@ class HomepageState extends State<Homepage> {
                     child: IconButton(
                       icon: const Icon(Icons.person,size: 33,color: Colors.white,),
                       onPressed: () {
-                        Scaffold.of(context).openDrawer();
+                        _navigationService.pushnamed("/userprofilepage",arguments: currentuserProfile);
                       },
                     ),
                   ),
@@ -229,7 +272,7 @@ class HomepageState extends State<Homepage> {
       ),
     );
   }
-  
+
   Widget _categaries() {
     return  Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -252,6 +295,137 @@ class HomepageState extends State<Homepage> {
           child: Row(
             children: [
               ServiceCard(onTap: () {
+                _navigationService.pushnamed(
+                  '/technicianlistskillbased',
+                  arguments: 'Cleaning', // Or any other service
+                );
+              },
+                  imagepath: 'assets/images/cleaning.png', service: "Cleaning"),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.065),
+              ServiceCard(onTap: () {
+                _navigationService.pushnamed(
+                  '/technicianlistskillbased',
+                  arguments: 'Plumbing', // Or any other service
+                );
+              },
+                  imagepath: 'assets/images/plumbing.png', service: "Plumbing"),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.065),
+              ServiceCard(onTap: () {
+                _navigationService.pushnamed(
+                  '/technicianlistskillbased',
+                  arguments: 'Repair', // Or any other service
+                );
+              },
+                  imagepath: 'assets/images/repairing.jpeg', service: "Repair"),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.065),
+              ServiceCard(onTap: () {
+                _navigationService.pushnamed(
+                  '/technicianlistskillbased',
+                  arguments: 'Painting', // Or any other service
+                );
+              },
+                  imagepath: 'assets/images/painter.png', service: "Painting"),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.065),
+              ServiceCard(onTap: () {
+                _navigationService.pushnamed(
+                  '/technicianlistskillbased',
+                  arguments: 'Electrics', // Or any other service
+                );
+              },
+                  imagepath: 'assets/images/electricity.png', service: "Electrics"),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.065),
+              ServiceCard(onTap: () {
+                _navigationService.pushnamed(
+                  '/technicianlistskillbased',
+                  arguments: 'Carpentry', // Or any other service
+                );
+              },
+                  imagepath: 'assets/images/carpenter.png', service: "Carpentry"),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.065),
+              ServiceCard(onTap: () {
+                _navigationService.pushnamed(
+                  '/technicianlistskillbased',
+                  arguments: 'HVAC Services',);
+              },
+                  imagepath: 'assets/images/Hvac.png', service: "HVAC Services"),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.065),
+              ServiceCard(onTap: () {
+                _navigationService.pushnamed(
+                  '/technicianlistskillbased',
+                  arguments: 'Pest Control', // Or any other service
+                );
+              },
+                  imagepath: 'assets/images/pest control.png', service: "Pest Control"),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.065),
+              ServiceCard(onTap: () {
+                _navigationService.pushnamed(
+                  '/technicianlistskillbased',
+                  arguments: 'Washing', // Or any other service
+                );
+              },
+                  imagepath: 'assets/images/washing.png', service: "Washing"),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.065),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _recommended() {
+    return Container(  // Add a container to provide constraints
+      height: 350,     // Set a fixed height based on your design
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Recommended",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              GestureDetector(
+                onTap: () {
+                  // Navigate to view all technicians
+                  _navigationService.pushnamed("/allrecommendedtechinician");
+                },
+                child: Text(
+                  "view all",
+                  style: TextStyle(fontSize: 21, color: Colors.blue),
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              itemCount: topTechnicians.length,
+              itemBuilder: (context, index) {
+                final technician = topTechnicians[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      _navigationService.pushnamed("/technicianinfo", arguments: technician);
+                    },
+                    child: TechnicianCard(technicianProfile: technician),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+}
+
+
+/*
+ServiceCard(onTap: () {
                 _navigationService.pushnamed(
                   '/technicianlistskillbased',
                   arguments: 'Electrics', // Or any other service
@@ -314,31 +488,4 @@ class HomepageState extends State<Homepage> {
               },
                   imagepath: 'assets/images/repair.jpeg', service: "Repair"),
               SizedBox(width: MediaQuery.of(context).size.width * 0.065),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _recommended() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Recommended",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
-            GestureDetector(
-                onTap: (){
-                  _navigationService.pushnamed('/allservicecardpage');
-                },
-                child: Text("view all",style: TextStyle(fontSize: 21,color: Colors.blue),)),
-          ],
-        ),
-      ],
-    );
-  }
-
-}
+* */

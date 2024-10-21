@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:profixer/Services/Navigation_services.dart';
 import 'package:profixer/Services/auth_services.dart';
 
 import '../../Services/database_services.dart';
@@ -16,6 +17,7 @@ class CartPage extends StatefulWidget {
 class CartPageState extends State<CartPage> {
   final GetIt _getIt = GetIt.instance;
   late DatabaseServices _databaseServices;
+  late NavigationService _navigationService;
   late AuthServices _authServices;
 
   List<TechnicianProfile> technicians = [];
@@ -25,6 +27,7 @@ class CartPageState extends State<CartPage> {
   void initState() {
     super.initState();
     _databaseServices = _getIt.get<DatabaseServices>();
+    _navigationService=_getIt.get<NavigationService>();
     _authServices = _getIt.get<AuthServices>();
     fetchTechniciansCart();
   }
@@ -71,7 +74,11 @@ class CartPageState extends State<CartPage> {
           final technician = technicians[index];
           return Padding(
             padding: const EdgeInsets.all(15.0),
-            child: TechnicianCard(technicianProfile: technician),
+            child: GestureDetector(
+              onTap: () {
+                _navigationService.pushnamed("/technicianinfo", arguments: technician);
+              },
+                child: TechnicianCard(technicianProfile: technician)),
           );
         },
       ),
