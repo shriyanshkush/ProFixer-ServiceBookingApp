@@ -1,5 +1,7 @@
 #google service
 google-services.json
+#stripe api
+consts.dart
 #firebase_options
 firebase_options.dart
 # Miscellaneous
