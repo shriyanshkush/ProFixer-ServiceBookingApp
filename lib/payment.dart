@@ -1,16 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'Services/stripe_services.dart';
+import 'models/payment_model.dart';
 
-class Payment extends StatefulWidget {
+class Paymentwindow extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return PaymentState();
   }
 
 }
-class PaymentState extends State<Payment> {
+class PaymentState extends State<Paymentwindow> {
   final GetIt getIt=GetIt.instance;
   late StripeServices stripeServices;
   @override
@@ -34,8 +34,9 @@ class PaymentState extends State<Payment> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             MaterialButton(
-              onPressed: () {
-                stripeServices.makePayments();
+              onPressed: () async{
+                Payment? payment=await stripeServices.makePayments(100);
+                print(payment);
               },
               color: Colors.green,
               child: const Text(

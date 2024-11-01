@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:profixer/Services/Alert_services.dart';
 import 'package:profixer/models/tecnician_model.dart';
@@ -89,6 +90,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
           },
         ),
         _buildProfileOption(
+          icon: FontAwesomeIcons.wallet,
+          label: 'Payment History',
+          onTap: ()  {
+            _navigationService.pushnamed("/paymenthistory");
+          },
+        ),
+        _buildProfileOption(
           icon: Icons.logout,
           label: 'Logout',
           onTap: () async {
@@ -96,7 +104,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             if (result) {
               _navigationService.pushReplacementnamed("/beforelogin");
               _alertServices.showToast(
-                icon: Icons.check_circle,
+                  icon: Icons.check_circle,
                   text: "User logged out Successfully !");
             }
           },

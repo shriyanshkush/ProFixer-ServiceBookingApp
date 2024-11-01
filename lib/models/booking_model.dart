@@ -1,4 +1,5 @@
 import 'package:profixer/models/tecnician_model.dart';
+import 'package:profixer/models/payment_model.dart';
 
 class Booking {
   final String BookingId;
@@ -12,6 +13,7 @@ class Booking {
   final String phoneNumber;
   final String specialInstructions;
   final bool workStatus;
+  final Payment? payment;
 
 
   Booking({
@@ -26,6 +28,7 @@ class Booking {
     required this.phoneNumber,
     required this.specialInstructions,
     this.workStatus=false,
+    required this.payment,
   });
 
   factory Booking.fromJson(Map<String, dynamic> json) {
@@ -41,6 +44,7 @@ class Booking {
       phoneNumber: json['phoneNumber'],
       specialInstructions: json['specialInstructions'],
       workStatus: json['workStatus'],
+      payment: json['payment'] !=null ?Payment.fromJson(json['payment']):null,
     );
   }
 
@@ -57,6 +61,7 @@ class Booking {
       'phoneNumber': phoneNumber,
       'specialInstructions': specialInstructions,
       'workStatus':workStatus,
+      'payment':payment?.toJson(),
     };
   }
 }

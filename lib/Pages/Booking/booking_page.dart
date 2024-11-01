@@ -7,6 +7,8 @@ import 'package:profixer/Services/Alert_services.dart';
 import 'package:profixer/Services/Navigation_services.dart';
 import 'package:profixer/Services/auth_services.dart';
 import 'package:profixer/Services/database_services.dart';
+import 'package:profixer/Services/stripe_services.dart';
+import 'package:profixer/models/payment_model.dart';
 import 'package:profixer/widgets/technician_card.dart';
 import 'package:uuid/uuid.dart';
 import '../../models/booking_model.dart';
@@ -29,6 +31,7 @@ class _BookingFormState extends State<BookingForm> {
   late AlertServices _alertServices;
   late AuthServices _authServices;
   late NavigationService _navigationService;
+  late StripeServices _stripeServices;
   String? _selectedTimeSlot;
   DateTime _bookingDate = DateTime.now();
   bool _isConfirmed = false;
@@ -48,6 +51,7 @@ class _BookingFormState extends State<BookingForm> {
     _alertServices=_getIt.get<AlertServices>();
     _navigationService=_getIt.get<NavigationService>();
     _authServices=_getIt.get<AuthServices>();
+    _stripeServices=_getIt.get<StripeServices>();
     _setAvailableTimeSlots();
   }
 
@@ -278,9 +282,9 @@ class _BookingFormState extends State<BookingForm> {
                   ),
                 ),
                   onPressed: () async {
-                    final uuid = Uuid();
                     final bookingId = '${DateTime.now().millisecondsSinceEpoch}';
-                    if (_formKey.currentState!.validate()) {
+                    Payment? payment= await _stripeServices.makePayments(100);
+                    if (_formKey.currentState!.validate() && payment!=null) {
                       _formKey.currentState!.save();
 
                       setState(() {
@@ -298,6 +302,7 @@ class _BookingFormState extends State<BookingForm> {
                         homeAddress: _homeAddress,
                         phoneNumber: _phoneNumber,
                         specialInstructions: _specialInstructions,
+                        payment:payment,
                       );
 
                       try {

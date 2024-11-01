@@ -24,6 +24,7 @@ import '../Pages/Technician/techinician_login.dart';
 import '../Pages/Technician/technician_registration.dart';
 import '../Pages/User/CartPage.dart';
 import '../Pages/User/all_recommended_technician.dart';
+import '../Pages/User/payment_history_page.dart';
 import '../Pages/User/showbooking.dart';
 import '../Pages/User/user_profile.dart';
 import '../Splash_Screen.dart';
@@ -52,7 +53,8 @@ class NavigationService {
     "/admindashboard":(context)=>AdminDashboard(),
     "/technicianverification":(context)=>TechnicianVerificationPage(),
     "/showallbookingstotechnician":(context)=>ShowAllBookingsTechnician(),
-    "/payment":(context)=>Payment(),
+    "/payment":(context)=>Paymentwindow(),
+    "/paymenthistory":(context)=>PaymentHistoryPage(),
   };
 
   GlobalKey<NavigatorState>? get navigatorkey{

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 import 'package:profixer/Pages/Admin/pdfView.dart';
 import 'package:profixer/Services/Alert_services.dart';
+import 'package:profixer/Services/Navigation_services.dart';
 import 'package:profixer/Services/database_services.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'dart:io';
@@ -23,12 +24,14 @@ class _TechnicianVerificationPageState extends State<TechnicianVerificationPage>
   final GetIt _getIt = GetIt.instance;
   late DatabaseServices _databaseServices;
   late AlertServices _alertServices;
+  late NavigationService _navigationService;
 
   @override
   void initState() {
     super.initState();
     _databaseServices = _getIt.get<DatabaseServices>();
     _alertServices=_getIt.get<AlertServices>();
+    _navigationService=_getIt.get<NavigationService>();
     fetchPendingTechnicians();
   }
 
@@ -200,6 +203,7 @@ class _TechnicianVerificationPageState extends State<TechnicianVerificationPage>
                               setState(() {
                                 _databaseServices.approveTechnician(technician.tid);
                                 _alertServices.showToast(text: "Technician Approved Succesfully",icon: Icons.check,);
+                                _navigationService.pushnamed("/admindashboard");
                               });
                             },
                             child: Text('Approve',style: TextStyle(color: Colors.white),),
@@ -212,6 +216,7 @@ class _TechnicianVerificationPageState extends State<TechnicianVerificationPage>
                               setState(() {
                                 _databaseServices.rejectTechnician(technician.tid);
                                 _alertServices.showToast(text: "Technician Rejected Succesfully",icon: Icons.check,);
+
                               });
                             },
                             child: Text('Reject',style: TextStyle(color: Colors.white),),

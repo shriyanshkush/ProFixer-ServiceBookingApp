@@ -62,17 +62,17 @@ class _AdminDashboardState extends State<AdminDashboard> {
             _buildStaticInfo(
               icon: Icons.pie_chart,
               label: 'Total Users',
-              value: '1500', // Static value for Total Users
+              value: '1', // Static value for Total Users
             ),
             _buildStaticInfo(
               icon: Icons.people,
               label: 'Total Technicians',
-              value: '250', // Static value for Total Technicians
+              value: '3', // Static value for Total Technicians
             ),
             _buildStaticInfo(
               icon: Icons.book,
               label: 'Total Bookings',
-              value: '3200', // Static value for Total Bookings
+              value: '4', // Static value for Total Bookings
             ),
             _buildStaticInfo(
               icon: Icons.attach_money,
