@@ -1,5 +1,4 @@
 import 'package:profixer/models/tecnician_model.dart';
-
 import 'booking_model.dart';
 class UserProfile {
   String uid;

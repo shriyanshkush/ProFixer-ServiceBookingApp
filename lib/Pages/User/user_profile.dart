@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:profixer/Services/Alert_services.dart';
-import 'package:profixer/models/tecnician_model.dart';
-import 'package:profixer/models/booking_model.dart';
-
 import '../../Services/Navigation_services.dart';
 import '../../Services/auth_services.dart';
 import '../../models/user_model.dart';
@@ -102,7 +99,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           onTap: () async {
             bool result = await _authServices.logout();
             if (result) {
-              _navigationService.pushReplacementnamed("/beforelogin");
+              _navigationService.handleLoginSuccess("/beforelogin");
               _alertServices.showToast(
                   icon: Icons.check_circle,
                   text: "User logged out Successfully !");

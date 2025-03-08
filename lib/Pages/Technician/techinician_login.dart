@@ -255,7 +255,7 @@ class TechinicianLoginPageState extends State<TechinicianLogin> {
     bool result= await _authServices.logIn(emailString!, passwordString!);
     print(result);
     if(result) {
-      _navigationService.pushReplacementnamed("/technicianhomepage");
+      _navigationService.handleLoginSuccess("/technicianhomepage");
     } else{
       _alertServices.showToast(text: "Failed to login, Please try again!",
           icon: Icons.error);

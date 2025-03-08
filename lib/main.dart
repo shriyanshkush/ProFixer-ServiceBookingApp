@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:profixer/Services/Navigation_services.dart';
 import 'package:profixer/Services/register_services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:profixer/consts.dart';
 
 
@@ -16,7 +17,7 @@ void main() async{
   await Firebase.initializeApp();
   await registerServices();
   Stripe.publishableKey=stripePublishableKey;
-  runApp(profixer());
+  runApp(ProviderScope(child: profixer()));
 }
 
 class profixer extends StatelessWidget {

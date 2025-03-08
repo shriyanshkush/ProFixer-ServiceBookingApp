@@ -275,7 +275,9 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
             Column(
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _navigationService.pushnamed("/chatHomeTechnician");
+                  },
                   icon: Icon(
                     Icons.chat,
                     size: 33,
@@ -297,7 +299,7 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
                     size: 33,
                   ),
                   onPressed: () {
-                    // Handle notifications
+
                   },
                 ),
                 Text(

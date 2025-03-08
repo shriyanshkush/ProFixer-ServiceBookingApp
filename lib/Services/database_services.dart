@@ -4,12 +4,17 @@ import 'package:profixer/Services/auth_services.dart';
 import 'package:profixer/models/booking_model.dart';
 import 'package:profixer/models/tecnician_model.dart';
 import 'package:profixer/models/user_model.dart';
+import 'package:profixer/utils.dart';
+
+import '../models/message.dart';
+import '../models/message_model.dart';
 
 
 class DatabaseServices{
   final FirebaseFirestore _firestore=FirebaseFirestore.instance;
   CollectionReference? _usercollection;
   CollectionReference? _techniciancollection;
+  CollectionReference? _chatCollection;
 
   DatabaseServices(){
     setupCollectionReference();
@@ -24,6 +29,11 @@ class DatabaseServices{
       (fromFirestore: (snapshots,_)=>TechnicianProfile.fromJson(snapshots.data()!),
         toFirestore: (technicianprofile,_)=>technicianprofile.toJson());
 
+    _chatCollection = _firestore.collection("chats").withConverter<MessageModel>(
+      fromFirestore: (snapshots, _) => MessageModel.fromJson(snapshots.data()!),
+      toFirestore: (chatMessage, _) => chatMessage.toJson(),
+    );
+
   }
 
   Future <void> createUserProfile({required UserProfile userProfile}) async{
@@ -33,6 +43,7 @@ class DatabaseServices{
   Future<void> createTechnicianProfile({required TechnicianProfile technician}) async{
     await _techniciancollection?.doc(technician.tid).set(technician);
   }
+
 
   Future<bool> decideUser(String userId) async{
     final techniciandoc =await _techniciancollection?.doc(userId).get();
@@ -326,6 +337,79 @@ class DatabaseServices{
       }
 
       final List<Booking> bookings = bookingsData
+          .map((bookingData) => bookingData as Booking)
+          .toList();
+
+      return bookings;
+    } catch (e) {
+      print('Error fetching bookings: $e');
+      return [];
+    }
+  }
+
+  Future<List<TechnicianProfile>> getBookedTechnicians(String userID) async {
+    try {
+      // Fetch user document from Firestore
+      final userDoc = await _usercollection?.doc(userID).get();
+
+      // If the user document doesn't exist, return an empty list
+      if (userDoc == null || !userDoc.exists) {
+        return [];
+      }
+
+      // Deserialize user data into UserProfile
+      final userProfile = userDoc.data() as UserProfile?;
+
+      // If the user profile is null or bookings are missing, return an empty list
+      if (userProfile == null || userProfile.bookings == null) {
+        return [];
+      }
+
+      // Extract the bookings list from the user profile
+      final List<Booking> bookings = userProfile.bookings!;
+
+      // Initialize a list to store unique technicians
+      final List<TechnicianProfile> technicians = [];
+
+      for (final booking in bookings) {
+        final technician = booking.technician;
+
+        // Add technician to the list only if it's not already present
+        if (!technicians.any((t) => t.tid == technician.tid)) {
+          technicians.add(technician);
+        }
+      }
+
+      return technicians;
+    } catch (e) {
+      // Handle errors gracefully and log the exception
+      print('Error fetching booked technicians: $e');
+      return [];
+    }
+  }
+
+
+  Future<List<Booking>> getBookingListTechnician(String userID) async {
+    try {
+      final userDoc = await _techniciancollection?.doc(userID).get();
+
+      if (userDoc == null || !userDoc.exists) {
+        return [];
+      }
+
+      final userProfile = userDoc.data() as TechnicianProfile?;
+
+      if (userProfile == null) {
+        return [];
+      }
+
+      final List<Booking>? bookingsData = userProfile.bookings;
+
+      if (bookingsData == null) {
+        return [];
+      }
+
+      final List<Booking> bookings = bookingsData
           .map((bookingData) => bookingData as Booking) // Explicitly cast each booking to Booking type
           .toList();
 
@@ -335,5 +419,82 @@ class DatabaseServices{
       return [];
     }
   }
+
+  Future<List<Map<String, String>>> getBookingListTechnicianUser(String userID) async {
+    try {
+      // Fetch the technician document from Firestore
+      final userDoc = await _techniciancollection?.doc(userID).get();
+
+      // If the document doesn't exist, return an empty list
+      if (userDoc == null || !userDoc.exists) {
+        return [];
+      }
+
+      // Deserialize the document into a TechnicianProfile
+      final userProfile = userDoc.data() as TechnicianProfile?;
+
+      // If the user profile or bookings are null, return an empty list
+      if (userProfile == null || userProfile.bookings == null) {
+        return [];
+      }
+
+      // Extract the bookings list
+      final List<Booking> bookings = userProfile.bookings!;
+
+      // Initialize a list to store unique users
+      final List<Map<String, String>> users = [];
+
+      for (final booking in bookings) {
+        final user = {
+          "id": booking.userId,
+          "name": booking.name,
+        };
+
+        // Add the user only if they are not already in the list
+        if (!users.any((u) => u["id"] == user["id"])) {
+          users.add(user);
+        }
+      }
+
+      return users;
+    } catch (e) {
+      // Handle errors gracefully and log the exception
+      print('Error fetching bookings: $e');
+      return [];
+    }
+  }
+
+
+  //functions for chat b/w user and technician
+  Future<bool> checkChatexists(String uid1,String uid2) async {
+    String chatId=GenerateChatID(uid1: uid1, uid2: uid2);
+    final result =await _chatCollection?.doc(chatId).get();
+    if(result!=null) {
+      return result.exists;
+    }
+    return false;
+  }
+
+  Future<void> createNewChat(String uid1,String uid2) async {
+    String chatID= GenerateChatID(uid1:uid1,uid2:uid2);
+    final docRef =_chatCollection!.doc(chatID);
+    final chat =MessageModel(chatId: chatID, senderId: uid1, recieverId: uid2, messages: []);
+    await docRef.set(chat);
+  }
+
+  Future<void> sentChatMessage(String uid1,String uid2,Message message) async{
+    String chatID= GenerateChatID(uid1:uid1,uid2:uid2);
+    final docRef =_chatCollection!.doc(chatID);
+    await docRef.update({
+      "messages" :FieldValue.arrayUnion([
+        message.toJson()
+      ]),},);
+  }
+
+  Stream<DocumentSnapshot<MessageModel>> getChatData(String uid1,String uid2) {
+    String chatID= GenerateChatID(uid1:uid1,uid2:uid2);
+    return _chatCollection?.doc(chatID).snapshots() as Stream<DocumentSnapshot<MessageModel>>;
+  }
+
 
 }

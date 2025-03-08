@@ -135,8 +135,8 @@ class HomepageState extends State<Homepage> {
         child: Container(
           color: Colors.white,
           child: TextField(
-            onSubmitted: (value) {
-              // Handle search submission logic here
+            onSubmitted: (value) async{
+              _navigationService.pushnamed("/technicianlistskillbased",arguments: value);
             },
             decoration: const InputDecoration(
               hintText: "Search for Services......",
@@ -263,7 +263,9 @@ class HomepageState extends State<Homepage> {
             SizedBox(width: MediaQuery.of(context).size.width * 0.015),
             Column(
               children: [
-                IconButton(onPressed: (){}, icon: Icon(Icons.chat,size: 33,color: Colors.white,)),
+                IconButton(onPressed: (){
+                  _navigationService.pushnamed("chathome");
+                }, icon: Icon(Icons.chat,size: 33,color: Colors.white,)),
                 Text("Chat",style: TextStyle(color: Colors.white),)
               ],
             ),

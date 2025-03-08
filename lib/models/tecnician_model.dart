@@ -11,7 +11,7 @@ class TechnicianProfile {
   String? govtID;
   String? proofOfWork;
   final Map<String, List<Map<String, bool>>> availability;
-  List<Review> reviews; // Changed to a non-nullable list with a default value
+  List<Review> reviews;
   List<Booking> bookings;
   String verificationStatus;
 
@@ -25,7 +25,7 @@ class TechnicianProfile {
     this.govtID,
     this.proofOfWork,
     required this.availability,
-    this.reviews = const [], // Default to an empty list
+    this.reviews = const [],
     this.bookings=const [],
     this.verificationStatus= "Pending",
   });

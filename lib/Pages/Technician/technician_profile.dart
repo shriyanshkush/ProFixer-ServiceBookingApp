@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
+import 'package:profixer/Services/Alert_services.dart';
 import '../../Services/Navigation_services.dart';
 import '../../Services/auth_services.dart';
 import '../../models/tecnician_model.dart';
@@ -22,12 +23,14 @@ class _TechnicianProfilePageState extends State<TechnicianProfilePage> {
   final GetIt _getIt = GetIt.instance;
   late AuthServices _authServices;
   late NavigationService _navigationService;
+  late AlertServices _alertServices;
 
   @override
   void initState() {
     super.initState();
     _authServices = _getIt.get<AuthServices>();
     _navigationService = _getIt.get<NavigationService>();
+    _alertServices=_getIt.get<AlertServices>();
   }
 
   @override
@@ -226,17 +229,23 @@ class _TechnicianProfilePageState extends State<TechnicianProfilePage> {
                 // Navigate to the reviews page or show reviews
               },
             ),
-
-
+            _buildProfileOption(
+              icon: FontAwesomeIcons.wallet,
+              label: 'Payment History',
+              onTap: ()  {
+                _navigationService.pushnamed("/paymenthistory");
+              },
+            ),
             _buildProfileOption(
               icon: Icons.logout,
               label: 'Logout',
               onTap: ()  {
                 _authServices.logout();
-                _navigationService.pushReplacementnamed("/beforelogin");
+                _alertServices.showToast(text: "logged out successfully !",icon: Icons.check_circle);
+                _navigationService.handleLoginSuccess("/beforelogin");
               },
             ),
-            SizedBox(height: 16),
+
             // Availability Section
           ],
         ),

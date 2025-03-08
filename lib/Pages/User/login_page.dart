@@ -258,7 +258,7 @@ class LoginPageState extends State<LoginPage> {
       bool result= await _authServices.logIn(email!, password!);
       print(result);
       if(result) {
-        _navigationService.pushReplacementnamed("/userhome");
+        _navigationService.handleLoginSuccess("/userhome");
       } else{
         _alertServices.showToast(text: "Failed to login, Please try again!",
             icon: Icons.error);

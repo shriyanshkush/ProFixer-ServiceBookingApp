@@ -69,7 +69,7 @@ class _BookingCardState extends State<BookingCardTechnician> {
                 _buildRow(Icons.message, "Instructions: ", widget.booking.specialInstructions),
                 ListTile(
                   title: Text(
-                    widget.booking.workStatus ? "Work Done" : "Work Pending",
+                    widget.booking.workStatus ? "Work Done" : "Work Status",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

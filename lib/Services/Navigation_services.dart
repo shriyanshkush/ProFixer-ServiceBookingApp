@@ -18,12 +18,15 @@ import '../Pages/Admin/Admin_login.dart';
 import '../Pages/Admin/adminDashBoard.dart';
 import '../Pages/Admin/technicianVerification.dart';
 import '../Pages/Booking/booking_page.dart';
+import '../Pages/Technician/chat_home_page.dart';
 import '../Pages/Technician/home_page.dart';
 import '../Pages/Technician/show_all_bookings.dart';
 import '../Pages/Technician/techinician_login.dart';
+import '../Pages/Technician/technician_payement_history_page.dart';
 import '../Pages/Technician/technician_registration.dart';
 import '../Pages/User/CartPage.dart';
 import '../Pages/User/all_recommended_technician.dart';
+import '../Pages/User/chat_home_page.dart';
 import '../Pages/User/payment_history_page.dart';
 import '../Pages/User/showbooking.dart';
 import '../Pages/User/user_profile.dart';
@@ -55,6 +58,9 @@ class NavigationService {
     "/showallbookingstotechnician":(context)=>ShowAllBookingsTechnician(),
     "/payment":(context)=>Paymentwindow(),
     "/paymenthistory":(context)=>PaymentHistoryPage(),
+    "/TechnicianPayementHistoryPage":(context)=>TechnicianPayementHistoryPage(),
+    "chathome":(context)=>ChatHomepage(),
+    "/chatHomeTechnician":(context)=>ChatHomepageTechnician(),
   };
 
   GlobalKey<NavigatorState>? get navigatorkey{
@@ -80,6 +86,13 @@ class NavigationService {
 
   void pushReplacementnamed(String routname) {
     _navigatorkey.currentState?.pushReplacementNamed(routname);
+  }
+
+  void handleLoginSuccess(String routname) {
+    _navigatorkey.currentState?.pushNamedAndRemoveUntil(
+      routname,
+          (route) => false,
+    );
   }
 
   void goback() {

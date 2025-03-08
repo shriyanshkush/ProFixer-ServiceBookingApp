@@ -34,7 +34,7 @@ class _SplashScreen extends State<SplashScreen> {
       if (_authservice.user != null) {
         String path = await DecideUserRole(_authservice.user!.uid);
         // Use the correct path to navigate based on user role
-        _navigationService.pushReplacementnamed(path);
+        _navigationService.handleLoginSuccess(path);
       } else {
         // Navigate to the login screen if not logged in
         _navigationService.pushReplacementnamed("/beforelogin");
