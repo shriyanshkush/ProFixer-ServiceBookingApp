@@ -4,8 +4,7 @@ ProFixer is a comprehensive mobile application designed to connect users with sk
 
 ## Screenshots  
 Below are some screenshots of the app:  
-
-https://github.com/shriyanshkush/ProFixer-ServiceBookingApp/tree/b937d36dbdcec1fc998808ed5bb5401cd92de8b8/App%20ScreenShots
+![Screenshot]([assets/images/screenshot.png](https://github.com/shriyanshkush/ProFixer-ServiceBookingApp/tree/b937d36dbdcec1fc998808ed5bb5401cd92de8b8/App%20ScreenShots))
 
 
 ## Table of Contents
