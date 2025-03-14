@@ -2,6 +2,12 @@
 
 ProFixer is a comprehensive mobile application designed to connect users with skilled technicians for various home and office repair services. The platform simplifies the process of finding, booking, and managing services provided by verified technicians in areas like plumbing, electrical work, carpentry, HVAC, and more.
 
+## Screenshots  
+Below are some screenshots of the app:  
+
+https://github.com/shriyanshkush/ProFixer-ServiceBookingApp/tree/b937d36dbdcec1fc998808ed5bb5401cd92de8b8/App%20ScreenShots
+
+
 ## Table of Contents
 
 - [Features](#features)
