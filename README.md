@@ -1,10 +1,23 @@
 # ProFixer - Technician Booking App
 
 ProFixer is a comprehensive mobile application designed to connect users with skilled technicians for various home and office repair services. The platform simplifies the process of finding, booking, and managing services provided by verified technicians in areas like plumbing, electrical work, carpentry, HVAC, and more.
+ 
+## 📸 App Screenshots  
 
-## Screenshots  
-Below are some screenshots of the app:  
-![Screenshot]([assets/images/screenshot.png](https://github.com/shriyanshkush/ProFixer-ServiceBookingApp/tree/b937d36dbdcec1fc998808ed5bb5401cd92de8b8/App%20ScreenShots))
+Here are some screenshots of the **ProFixer Service Booking App**:
+
+### 🏠 Home Screen  
+![Home Screen]([https://raw.githubusercontent.com/shriyanshkush/ProFixer-ServiceBookingApp/b937d36dbdcec1fc998808ed5bb5401cd92de8b8/App%20ScreenShots/HomeScreen.png](https://github.com/shriyanshkush/ProFixer-ServiceBookingApp/blob/8bc6fd265361ec63e21e1b4edd66e0fa3aee8271/App%20ScreenShots/Screenshot%20(451).png))  
+
+### 📅 Booking Page  
+![Booking Page]([https://raw.githubusercontent.com/shriyanshkush/ProFixer-ServiceBookingApp/b937d36dbdcec1fc998808ed5bb5401cd92de8b8/App%20ScreenShots/BookingPage.png](https://github.com/shriyanshkush/ProFixer-ServiceBookingApp/blob/8bc6fd265361ec63e21e1b4edd66e0fa3aee8271/App%20ScreenShots/Screenshot%20(712).png))  
+
+### 👤 Service page  
+![Profile Page]([https://raw.githubusercontent.com/shriyanshkush/ProFixer-ServiceBookingApp/b937d36dbdcec1fc998808ed5bb5401cd92de8b8/App%20ScreenShots/ProfilePage.png](https://github.com/shriyanshkush/ProFixer-ServiceBookingApp/blob/8bc6fd265361ec63e21e1b4edd66e0fa3aee8271/App%20ScreenShots/Screenshot%20(452).png))  
+
+### 💳 Payment Screen  
+![Payment Screen]([https://raw.githubusercontent.com/shriyanshkush/ProFixer-ServiceBookingApp/b937d36dbdcec1fc998808ed5bb5401cd92de8b8/App%20ScreenShots/PaymentScreen.png](https://github.com/shriyanshkush/ProFixer-ServiceBookingApp/blob/8bc6fd265361ec63e21e1b4edd66e0fa3aee8271/App%20ScreenShots/Screenshot%20(714).png))  
+
 
 
 ## Table of Contents
