@@ -391,34 +391,53 @@ class DatabaseServices{
 
   Future<List<Booking>> getBookingListTechnician(String userID) async {
     try {
+      print('Fetching technician document for userID: $userID');
+
       final userDoc = await _techniciancollection?.doc(userID).get();
 
-      if (userDoc == null || !userDoc.exists) {
+      if (userDoc == null) {
+        print('userDoc is null');
         return [];
       }
 
-      final userProfile = userDoc.data() as TechnicianProfile?;
+      if (!userDoc.exists) {
+        print('Technician document does not exist for userID: $userID');
+        return [];
+      }
 
+      print('Technician document found.');
+
+      final data = userDoc.data();
+      print('Raw document data: $data');
+
+      final userProfile = data as TechnicianProfile?;
       if (userProfile == null) {
+        print('userProfile is null after casting');
         return [];
       }
 
-      final List<Booking>? bookingsData = userProfile.bookings;
-
+      final bookingsData = userProfile.bookings;
       if (bookingsData == null) {
+        print('No bookings found in userProfile');
         return [];
       }
 
-      final List<Booking> bookings = bookingsData
-          .map((bookingData) => bookingData as Booking) // Explicitly cast each booking to Booking type
+      print('Bookings found: ${bookingsData.length} items');
+
+      final bookings = bookingsData
+          .map((bookingData) => bookingData as Booking)
           .toList();
 
+      print('Successfully casted bookings list. Total bookings: ${bookings.length}');
+
       return bookings;
-    } catch (e) {
+    } catch (e, stackTrace) {
       print('Error fetching bookings: $e');
+      print('Stack trace: $stackTrace');
       return [];
     }
   }
+
 
   Future<List<Map<String, String>>> getBookingListTechnicianUser(String userID) async {
     try {

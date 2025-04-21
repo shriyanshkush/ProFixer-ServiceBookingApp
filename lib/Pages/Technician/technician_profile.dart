@@ -233,7 +233,7 @@ class _TechnicianProfilePageState extends State<TechnicianProfilePage> {
               icon: FontAwesomeIcons.wallet,
               label: 'Payment History',
               onTap: ()  {
-                _navigationService.pushnamed("/paymenthistory");
+                _navigationService.pushnamed("/TechnicianPayementHistoryPage");
               },
             ),
             _buildProfileOption(

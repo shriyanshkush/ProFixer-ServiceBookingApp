@@ -291,7 +291,19 @@ class _BookingFormState extends State<BookingForm> {
                         _isLoading = true; // Show a loading indicator while saving
                       });
                       _isConfirmed = true;
-                      TechnicianProfile technician=TechnicianProfile(tid: widget.technician.tid, name: widget.technician.name, phoneNumber: widget.technician.phoneNumber, skill: widget.technician.skill, rating: widget.technician.rating, availability: {},bookings: []);
+                      TechnicianProfile technician=TechnicianProfile(
+                          tid: widget.technician.tid,
+                          name: widget.technician.name,
+                          phoneNumber: widget.technician.phoneNumber,
+                          skill: widget.technician.skill,
+                          rating: widget.technician.rating,
+                          availability: {},
+                          pfpURL: widget.technician.pfpURL,
+                          govtID: widget.technician.govtID,
+                          proofOfWork: widget.technician.proofOfWork,
+                          bookings: [],
+                        verificationStatus: widget.technician.verificationStatus
+                      );
                       final booking = Booking(
                         userId: _authServices.user!.uid,
                         BookingId: bookingId,

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
@@ -33,6 +35,7 @@ class ShowBookingsState extends State<ShowBookings> {
       isLoading = true;
     });
     final bookings = await _databaseServices.getBookingList(_authServices.user!.uid);
+    //print(jsonDecode(bookings));
     setState(() {
       bookingList = bookings;
       isLoading = false;

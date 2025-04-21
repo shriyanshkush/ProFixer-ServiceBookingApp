@@ -9,6 +9,8 @@ import '../../models/booking_model.dart';
 import '../../widgets/payment_card.dart';
 
 class TechnicianPayementHistoryPage extends StatefulWidget {
+  const TechnicianPayementHistoryPage({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return PaymentHistoryPageState();
@@ -34,11 +36,14 @@ class PaymentHistoryPageState extends State<TechnicianPayementHistoryPage> {
     setState(() {
       isLoading = true;
     });
-    final bookings = await _databaseServices.getBookingListTechnician(_authServices.user!.uid);
+    List<Booking> bookings = await _databaseServices.getBookingListTechnician(_authServices.user!.uid);
+
     setState(() {
       bookingList = bookings;
       isLoading = false;
     });
+
+    print("Bookings fetched: $bookingList");
   }
 
   @override

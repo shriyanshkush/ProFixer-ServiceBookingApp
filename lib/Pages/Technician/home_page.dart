@@ -146,41 +146,89 @@ class _TechnicianHomePageState extends State<TechnicianHomePage> {
 
   Widget earningsSummary() {
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.black,
-            width: 1.0,
-          )),
-      width: 365,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Text(
-                'Earnings Summary',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        gradient: LinearGradient(
+          colors: [Colors.white, Colors.grey.shade100],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            blurRadius: 10,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Text(
+              'Earnings Summary',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: Colors.black87,
               ),
             ),
-            SizedBox(height: 5),
-            Center(child: Text("Total Earnings Today:₹ 1000.00")),
-            Center(
-                child: Text(
-                    'Total Earnings This Month: ₹${earningsThisMonth.toStringAsFixed(2)}')),
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  // Handle view detailed earnings
-                },
-                child: Text(
-                  'View Detailed Earnings',
-                  style: TextStyle(color: Colors.blue),
+          ),
+          SizedBox(height: 16),
+          Row(
+            children: [
+              Icon(Icons.calendar_today, color: Colors.green, size: 24),
+              SizedBox(width: 10),
+              Text(
+                'Today:',
+                style: TextStyle(fontSize: 16),
+              ),
+              Spacer(),
+              Text(
+                '₹1000.00',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
                 ),
               ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            children: [
+              Icon(Icons.calendar_month, color: Colors.blue, size: 24),
+              SizedBox(width: 10),
+              Text(
+                'This Month:',
+                style: TextStyle(fontSize: 16),
+              ),
+              Spacer(),
+              Text(
+                '₹${earningsThisMonth.toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          Center(
+            child: TextButton.icon(
+              onPressed: () {
+                // Navigate to detailed earnings
+              },
+              label: Text(
+                'View Detailed Earnings',
+                style: TextStyle(color: Colors.blue,fontSize: 20),
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
